@@ -1,4 +1,4 @@
-from src.main.blockchain.transaction import *
+from balue_master.src.main.blockchain.transaction import *
 
 
 class Block:

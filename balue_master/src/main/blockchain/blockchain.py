@@ -1,5 +1,5 @@
-from src.main.blockchain.block import *
-from src.main.wallet.wallet import *
+from balue_master.src.main.blockchain.block import *
+from balue_master.src.main.wallet.wallet import *
 import os
 
 

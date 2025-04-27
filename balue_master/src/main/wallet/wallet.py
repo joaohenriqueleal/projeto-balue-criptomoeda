@@ -1,4 +1,4 @@
-from src.main.wallet.wallet_keys import *
+from balue_master.src.main.wallet.wallet_keys import *
 import os
 
 
