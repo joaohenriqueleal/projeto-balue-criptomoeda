@@ -197,7 +197,7 @@ class Blockchain:
     def previous_hash(self): return self.chain[-1]["hash"]
 
     def adjust_difficulty(self):
-        interval_adjust = 2
+        interval_adjust = 2016
         initial_difficulty = 4
         tempo_alvo = 600000000000 # 10 minutos em nanosegundos.
 
@@ -231,7 +231,7 @@ class Blockchain:
         return self.chain[start:index]
 
     def verify_difficulty(self, index):
-        interval_adjust = 2
+        interval_adjust = 2016
         initial_difficulty = 4
         tempo_alvo = 600000000000  # 10 minutos em nanosegundos.
 
