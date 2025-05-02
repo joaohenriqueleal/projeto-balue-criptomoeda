@@ -1,4 +1,4 @@
-from balue_master.src.main.connection.node import *
+from src.main.connection.node import *
 from decimal import Decimal
 from datetime import datetime
 
@@ -20,6 +20,8 @@ def main_menu():
     while True:
         thread_request_chain = threading.Thread(target=node.request_chain)
         thread_request_chain.start()
+        thread_peers = threading.Thread(target=node.broadcast_peers)
+        thread_peers.start()
         print('[1] para Consultar Saldo.')
         print('[2] para Consultar Endereço Balue.')
         print('[3] para Transferir Balue.')
@@ -105,8 +107,6 @@ def main_menu():
                 ip = input('IP do peer:  ').strip()
                 port = int(input('PORTA do peer:  '))
                 node.add_peer(ip, port)
-                thread_peers = threading.Thread(target=node.broadcast_peers)
-                thread_peers.start()
                 print('~' * 80)
                 print('Peer adicionado com sucesso!')
                 print('~' * 80)
