@@ -180,7 +180,7 @@ class BalueApp:
         txs = ''
         for block in b.chain:
             for tr in block["transactions"]:
-                if tr["receiver"] == self.wallet.address:
+                if tr["receiver"] == self.wallet.address and tr["metadata"] != "0":
                     txs += f'\nBloco: {block["index"]}, transação: {tr["hash"][:8]}... em {b.formatar_timestamp(tr["timestamp"])}  \n descrição: "{tr["metadata"]}" de: {tr["sender"]} \n ~~~~~~~~~~~~~~~~~~~~~ \n'
         messagebox.showinfo("Transações", txs or "Nenhuma transação encontrada.")
         thread_request_chain = threading.Thread(target=self.node.request_chain)
