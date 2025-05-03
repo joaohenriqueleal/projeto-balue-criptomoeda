@@ -206,13 +206,13 @@ class Blockchain:
         return data.strftime('%d/%m/%Y: %H:%M:%S')
 
     def search_metadata(self, address):
-        print('Descritions for your address.'.center(80))
+        print('Descrições para o seu endereço.'.center(80))
         for block in self.chain:
             for tr in block["transactions"]:
                 if tr["receiver"] == address:
                     print('~' * 80)
-                    print(f'Block: {block["index"]}, transaction: {tr["hash"][:20]}...')
-                    print(f'    descrition: "{tr["metadata"]}" in {self.formatar_timestamp(tr["timestamp"])} of {tr["sender"]}')
+                    print(f'Bloco: {block["index"]}, transação: {tr["hash"][:20]}... em {self.formatar_timestamp(tr["timestamp"])} ')
+                    print(f'    descrição: "{tr["metadata"]}" de {tr["sender"]}')
 
     def index(self): return len(self.chain)
     def previous_hash(self): return self.chain[-1]["hash"]
