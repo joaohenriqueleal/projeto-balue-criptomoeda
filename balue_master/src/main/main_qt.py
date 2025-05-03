@@ -57,9 +57,17 @@ class BalueApp:
     def consultar_saldo(self):
         saldo = Decimal(b.get_balance(self.wallet.address))
         self.balance_label.config(text=f"Saldo: {saldo:.8f} B$")
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def consultar_endereco(self):
         self.address_label.config(text=f"Endereço Balue: {self.wallet.address}")
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def transferir_balue(self):
         win = tk.Toplevel(self.root)
@@ -98,6 +106,10 @@ class BalueApp:
                 messagebox.showerror("Erro", str(e))
 
         tk.Button(win, text="Enviar", command=enviar).pack(pady=10)
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def minerar_balue(self):
         if b.chain:
@@ -117,11 +129,19 @@ class BalueApp:
                 messagebox.showerror("Erro", "Falha na mineração.")
 
         threading.Thread(target=minerar).start()
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def ver_blocos(self):
         ultimos_blocos = b.chain[-5:] if len(b.chain) >= 5 else b.chain
         blocos_texto = "\n\n".join([f"Índice: {blk['index']}, Hash: {blk['hash']}" for blk in ultimos_blocos])
         messagebox.showinfo("Últimos Blocos", blocos_texto or "Sem blocos.")
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def adicionar_peer(self):
         win = tk.Toplevel(self.root)
@@ -143,10 +163,18 @@ class BalueApp:
                 messagebox.showerror("Erro", str(e))
 
         tk.Button(win, text="Adicionar", command=add).pack(pady=10)
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def consultar_ip_porta(self):
         msg = f"IP Local: {self.node.local_ip}\nIP Público: {self.node.public_ip}\nPorta: {self.node.port}"
         messagebox.showinfo("IP e Porta", msg)
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def ver_transacoes(self):
         txs = ''
@@ -155,6 +183,10 @@ class BalueApp:
                 if tr["receiver"] == self.wallet.address:
                     txs += f'\nBloco: {block["index"]}, transação: {tr["hash"][:15]}..., em {b.formatar_timestamp(tr["timestamp"])}    descrição: "{tr["metadata"]}", de: {tr["sender"]}'
         messagebox.showinfo("Transações", txs or "Nenhuma transação encontrada.")
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
 
     def update_balance(self):
         self.consultar_saldo()
