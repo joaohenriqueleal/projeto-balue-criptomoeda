@@ -1,5 +1,5 @@
-from balue_master.src.main.blockchain.block import *
-from balue_master.src.main.wallet.wallet import *
+from src.main.blockchain.block import *
+from src.main.wallet.wallet import *
 import os
 
 
@@ -192,6 +192,14 @@ class Blockchain:
             print(f'Block, {block["index"]}, Hash: {block["hash"][:15]}...')
             print(f'      with {len(block["transactions"])} transactions.')
             print('~' * 80)
+
+    def search_metadata(self, address):
+        print('Descritions for your address.'.center(80))
+        for block in self.chain:
+            for tr in block["transactions"]:
+                if tr["receiver"] == address:
+                    print('~' * 80)
+                    print(f'Block: {block["index"]}, transaction: {tr["hash"][:20]}... - "{tr["metadata"]}"')
 
     def index(self): return len(self.chain)
     def previous_hash(self): return self.chain[-1]["hash"]

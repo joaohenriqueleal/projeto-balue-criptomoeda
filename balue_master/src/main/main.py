@@ -6,7 +6,7 @@ from datetime import datetime
 def main_menu():
     wallet = Wallet(True)
     miner = Miner(wallet.address, wallet.public_key, wallet.private_key)
-    node = Node(8888)
+    node = Node(8889)
     thread_node = threading.Thread(target=node.start_node)
     thread_node.start()
     print('=' * 80)
@@ -29,7 +29,8 @@ def main_menu():
         print('[5] para Ver últimos dez blocos.')
         print('[6] para Adicionar um peer a sua lista.')
         print('[7] para Consultar IP e PORTA.')
-        print('[8] para Sair.')
+        print('[8] para Ver descrições de transações do seu endereço.')
+        print('[9] para Sair.')
         try:
             print('~' * 80)
             opcao = int(input('>>>  '))
@@ -118,6 +119,9 @@ def main_menu():
             node.peer_infos()
             print('~' * 80)
         elif opcao == 8:
+            b.search_metadata(wallet.address)
+            print('~' * 80)
+        elif opcao == 9:
             print('Volte Sempre!')
             time.sleep(3)
             exit()
