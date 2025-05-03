@@ -190,8 +190,6 @@ class Blockchain:
             for tr in blk.transactions:
                 if tr["sender"] == address:
                     balance -= (tr["value"] + tr["fees"])
-                if tr["receiver"] == address:
-                    balance += tr["value"]
         return balance
 
     def print_chain(self):
@@ -299,3 +297,4 @@ class Blockchain:
 
 
 b = Blockchain()
+

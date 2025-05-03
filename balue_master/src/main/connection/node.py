@@ -154,6 +154,8 @@ class Node:
                         else:
                             b.chain.append(block)
                             if b.chain_is_valid():
+                                if b.pending_block.index == block["index"]:
+                                    b.pending_block = []
                                 b.save_chain()
                                 return
                             else:
@@ -167,3 +169,4 @@ class Node:
                     break
 
         self.add_peer(addr[0], self.port)
+
