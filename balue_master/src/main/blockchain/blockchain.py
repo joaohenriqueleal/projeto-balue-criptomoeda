@@ -1,5 +1,6 @@
 from src.main.blockchain.block import *
 from src.main.wallet.wallet import *
+from datetime import datetime
 import os
 
 
@@ -185,6 +186,12 @@ class Blockchain:
                     balance -= (tr["value"] + tr["fees"])
                 if tr["receiver"] == address:
                     balance += tr["value"]
+        for blk in self.pending_block:
+            for tr in blk.transactions:
+                if tr["sender"] == address:
+                    balance -= (tr["value"] + tr["fees"])
+                if tr["receiver"] == address:
+                    balance += tr["value"]
         return balance
 
     def print_chain(self):
@@ -193,13 +200,19 @@ class Blockchain:
             print(f'      with {len(block["transactions"])} transactions.')
             print('~' * 80)
 
+    def formatar_timestamp(self, timestamp_ns: int) -> str:
+        timestamp_s = timestamp_ns / 1_000_000_000  # converte nanosegundos para segundos
+        data = datetime.fromtimestamp(timestamp_s)
+        return data.strftime('%d/%m/%Y: %H:%M:%S')
+
     def search_metadata(self, address):
         print('Descritions for your address.'.center(80))
         for block in self.chain:
             for tr in block["transactions"]:
                 if tr["receiver"] == address:
                     print('~' * 80)
-                    print(f'Block: {block["index"]}, transaction: {tr["hash"][:20]}... - "{tr["metadata"]}"')
+                    print(f'Block: {block["index"]}, transaction: {tr["hash"][:20]}...')
+                    print(f'    descrition: "{tr["metadata"]}" in {self.formatar_timestamp(tr["timestamp"])} of {tr["sender"]}')
 
     def index(self): return len(self.chain)
     def previous_hash(self): return self.chain[-1]["hash"]
