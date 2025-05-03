@@ -136,7 +136,7 @@ class BalueApp:
 
     def ver_blocos(self):
         ultimos_blocos = b.chain[-5:] if len(b.chain) >= 5 else b.chain
-        blocos_texto = "\n\n".join([f"Índice: {blk['index']}, Hash: {blk['hash']}" for blk in ultimos_blocos])
+        blocos_texto = "\n\n".join([f"Índice: {blk['index']}, Hash: {blk['hash'][:10]}... \n  com {len(blk['transactions'])} transações \n ~~~~~~~~~~~~~~~~~~~~~" for blk in ultimos_blocos])
         messagebox.showinfo("Últimos Blocos", blocos_texto or "Sem blocos.")
         thread_request_chain = threading.Thread(target=self.node.request_chain)
         thread_request_chain.start()
@@ -181,7 +181,7 @@ class BalueApp:
         for block in b.chain:
             for tr in block["transactions"]:
                 if tr["receiver"] == self.wallet.address:
-                    txs += f'\nBloco: {block["index"]}, transação: {tr["hash"][:15]}..., em {b.formatar_timestamp(tr["timestamp"])}    descrição: "{tr["metadata"]}", de: {tr["sender"]}'
+                    txs += f'\nBloco: {block["index"]}, transação: {tr["hash"][:8]}... em {b.formatar_timestamp(tr["timestamp"])}  \n descrição: "{tr["metadata"]}" de: {tr["sender"]} \n ~~~~~~~~~~~~~~~~~~~~~ \n'
         messagebox.showinfo("Transações", txs or "Nenhuma transação encontrada.")
         thread_request_chain = threading.Thread(target=self.node.request_chain)
         thread_request_chain.start()
