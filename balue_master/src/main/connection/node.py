@@ -1,4 +1,4 @@
-from balue_master.src.main.mine.miner import *
+from src.main.mine.miner import *
 import socket
 import requests
 import threading

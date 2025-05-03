@@ -1,4 +1,4 @@
-from balue_master.src.main.blockchain.blockchain import *
+from src.main.blockchain.blockchain import *
 
 
 class Miner:
