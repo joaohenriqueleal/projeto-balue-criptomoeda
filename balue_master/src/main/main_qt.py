@@ -90,8 +90,8 @@ class BalueApp:
                 receiver = dest.get()
                 value = float(val.get())
                 metadata = meta.get() if meta.get() != "" else None
-
-                if value > b.get_balance(self.wallet.address):
+                messagebox.showinfo("Valor total", f"Valor + taxas: {Decimal(value + b.adjust_mining_fees()):.8f} B$")
+                if (value + b.adjust_mining_fees()) > b.get_balance(self.wallet.address):
                     messagebox.showerror("Erro", "Saldo insuficiente!")
                     return
 
