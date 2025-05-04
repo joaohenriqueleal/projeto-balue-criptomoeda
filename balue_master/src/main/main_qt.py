@@ -22,6 +22,12 @@ class BalueApp:
         self.create_main_panel()
         self.update_balance()
 
+        if b.chain_is_valid(): pass
+        else:
+            messagebox.showinfo("Erro", f"Blockchain inválido! Removendo...")
+            os.remove(b.chain_path)
+            b.chain = []
+
     def create_menu(self):
         menu_bar = tk.Menu(self.root)
         self.root.config(menu=menu_bar)
@@ -110,6 +116,11 @@ class BalueApp:
         thread_request_chain.start()
         thread_peers = threading.Thread(target=self.node.broadcast_peers)
         thread_peers.start()
+        if b.chain_is_valid(): pass
+        else:
+            messagebox.showinfo("Erro", f"Blockchain inválido! Removendo...")
+            os.remove(b.chain_path)
+            b.chain = []
 
     def minerar_balue(self):
         if b.chain:
@@ -133,6 +144,11 @@ class BalueApp:
         thread_request_chain.start()
         thread_peers = threading.Thread(target=self.node.broadcast_peers)
         thread_peers.start()
+        if b.chain_is_valid(): pass
+        else:
+            messagebox.showinfo("Erro", f"Blockchain inválido! Removendo...")
+            os.remove(b.chain_path)
+            b.chain = []
 
     def ver_blocos(self):
         ultimos_blocos = b.chain[-5:] if len(b.chain) >= 5 else b.chain
