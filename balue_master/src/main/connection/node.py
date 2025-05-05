@@ -154,7 +154,7 @@ class Node:
                         else:
                             b.chain.append(block)
                             if b.chain_is_valid():
-                                if b.pending_block.index == block["index"]:
+                                if b.pending_block[0].index == block["index"]:
                                     b.pending_block = []
                                 b.save_chain()
                                 return

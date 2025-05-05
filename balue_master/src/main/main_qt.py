@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from decimal import Decimal
+
 from src.main.connection.node import *
 
 class BalueApp:
@@ -38,8 +39,9 @@ class BalueApp:
 
         options_menu = tk.Menu(menu_bar, tearoff=0)
         menu_bar.add_cascade(label="Options", menu=options_menu)
-        options_menu.add_command(label="Consultar Saldo", command=self.consultar_saldo)
-        options_menu.add_command(label="Consultar Endereço", command=self.consultar_endereco)
+        options_menu.add_command(label="Atualizar Saldo", command=self.consultar_saldo)
+        options_menu.add_command(label="Atualizar Endereço", command=self.consultar_endereco)
+        options_menu.add_command(label="Adicionar novo bloco", command=self.add_block)
         options_menu.add_command(label="Transferir Balue", command=self.transferir_balue)
         options_menu.add_command(label="Minerar Balue", command=self.minerar_balue)
         options_menu.add_command(label="Ver Últimos Blocos", command=self.ver_blocos)
@@ -74,6 +76,20 @@ class BalueApp:
         thread_request_chain.start()
         thread_peers = threading.Thread(target=self.node.broadcast_peers)
         thread_peers.start()
+
+    def add_block(self):
+        if len(b.pending_block) == 0:
+            new_block = Block(b.index(), b.previous_hash(), b.adjust_difficulty(), None, None, None, b.adjust_reward())
+            b.pending_block.append(new_block)
+            messagebox.showinfo("Bloco adicionado", "Bloco adicionado com sucesso!")
+        else:
+            messagebox.showerror("Erro", "Há um bloco pendente a ser minerado!")
+        thread_request_chain = threading.Thread(target=self.node.request_chain)
+        thread_request_chain.start()
+        thread_peers = threading.Thread(target=self.node.broadcast_peers)
+        thread_peers.start()
+        thread_br_pending = threading.Thread(target=self.node.broadcast_pending)
+        thread_br_pending.start()
 
     def transferir_balue(self):
         win = tk.Toplevel(self.root)
