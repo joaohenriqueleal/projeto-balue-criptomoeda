@@ -1,4 +1,4 @@
-from src.main.connection.node import *
+from src.sec.connection.node import *
 from decimal import Decimal
 from datetime import datetime
 
@@ -6,7 +6,7 @@ from datetime import datetime
 def main_menu():
     wallet = Wallet(True)
     miner = Miner(wallet.address, wallet.public_key, wallet.private_key)
-    node = Node(8889)
+    node = Node(8888)
     thread_node = threading.Thread(target=node.start_node)
     thread_node.start()
     print('=' * 80)
@@ -30,7 +30,8 @@ def main_menu():
         print('[6] para Adicionar um peer a sua lista.')
         print('[7] para Consultar IP e PORTA.')
         print('[8] para Ver descrições de transações do seu endereço.')
-        print('[9] para Sair.')
+        print('[9] para Adicionar um novo bloco.')
+        print('[10] para Sair.')
         try:
             print('~' * 80)
             opcao = int(input('>>>  '))
@@ -122,6 +123,17 @@ def main_menu():
             b.search_metadata(wallet.address)
             print('~' * 80)
         elif opcao == 9:
+            if len(b.pending_block) == 0:
+                new_block = Block(b.index(), b.previous_hash(), b.adjust_difficulty(), None, None, None,b.adjust_reward())
+                b.pending_block.append(new_block)
+                print("Bloco adicionado com sucesso!")
+                print('~' * 80)
+            else:
+                print("Erro", "Há um bloco pendente a ser minerado!")
+                print('~' * 80)
+            thread_br_pending = threading.Thread(target=node.broadcast_pending)
+            thread_br_pending.start()
+        elif opcao == 10:
             print('Volte Sempre!')
             time.sleep(3)
             exit()
