@@ -147,8 +147,18 @@ class Node:
                         if block.get("nonce") == 0 and block.get("hash") == "0" and not block.get("miner_address"):
                             block_obj = Block.from_dict(block)
                             if b.is_valid_pending_block(block_obj):
-                                b.pending_block = []
-                                b.add_block_to_pending(Block.from_dict(block))
+                                if len(b.pending_block) > 0:
+                                    if block_obj.index == b.pending_block[0].index:
+                                        if len(block_obj.transactions) >= len(b.pending_block[0].transactions):
+                                            b.pending_block = []
+                                            b.add_block_to_pending(Block.from_dict(block))
+                                        else:
+                                            break
+                                    else:
+                                        break
+                                else:
+                                    b.pending_block = []
+                                    b.add_block_to_pending(Block.from_dict(block))
                             else:
                                 break
                         else:
@@ -169,4 +179,3 @@ class Node:
                     break
 
         self.add_peer(addr[0], self.port)
-
