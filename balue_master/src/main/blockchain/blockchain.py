@@ -217,7 +217,7 @@ class Blockchain:
 
     def adjust_difficulty(self):
         interval_adjust = 2016
-        initial_difficulty = 4
+        initial_difficulty = 6
         tempo_alvo = 600000000000 # 10 minutos em nanosegundos.
 
         if len(self.chain) < interval_adjust:
@@ -251,7 +251,7 @@ class Blockchain:
 
     def verify_difficulty(self, index):
         interval_adjust = 2016
-        initial_difficulty = 4
+        initial_difficulty = 6
         tempo_alvo = 600000000000  # 10 minutos em nanosegundos.
 
         if index < interval_adjust:
