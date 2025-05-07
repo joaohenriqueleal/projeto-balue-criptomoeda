@@ -5,9 +5,9 @@ import os
 class Wallet:
 
     def __init__(self, setup: bool):
-        self.private_key_path = "private_key.pem"
-        self.public_key_path = "public_key.pem"
-        self.address_path = "address.json"
+        self.private_key_path = "balue/private_key.pem"
+        self.public_key_path = "balue/public_key.pem"
+        self.address_path = "balue/address.json"
 
         self.private_key = gerar_chave_privada()
         self.public_key = gerar_chave_publica(self.private_key)

@@ -19,12 +19,15 @@ class Blockchain:
             self.add_block_to_pending(genesis)
 
     def save_chain(self):
-        with open(self.chain_path, 'w', encoding='utf-8') as chain_file:
+        os.makedirs('balue', exist_ok=True)
+        caminho = os.path.join('balue', self.chain_path)
+        with open(caminho, 'w', encoding='utf-8') as chain_file:
             json.dump(self.chain, chain_file, ensure_ascii=False, indent=4)
 
     def load_chain(self):
-        if os.path.exists(self.chain_path):
-            with open(self.chain_path, 'r', encoding='utf-8') as chain_file:
+        caminho = os.path.join('balue', self.chain_path)
+        if os.path.exists(caminho):
+            with open(caminho, 'r', encoding='utf-8') as chain_file:
                 self.chain = json.load(chain_file)
         else:
             self.save_chain()
@@ -297,4 +300,3 @@ class Blockchain:
 
 
 b = Blockchain()
-

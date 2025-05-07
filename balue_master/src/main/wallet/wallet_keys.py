@@ -1,6 +1,7 @@
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.backends import default_backend
+import os
 import hashlib
 import base64
 import json
@@ -23,6 +24,7 @@ def gerar_endereco(chave_publica):
     return endereco
 
 def salvar_chave_privada(chave_privada, caminho):
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
     with open(caminho, "wb") as f:
         f.write(
             chave_privada.private_bytes(
@@ -33,6 +35,7 @@ def salvar_chave_privada(chave_privada, caminho):
         )
 
 def salvar_chave_publica(chave_publica, caminho):
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
     with open(caminho, "wb") as f:
         f.write(
             chave_publica.public_bytes(
@@ -42,6 +45,7 @@ def salvar_chave_publica(chave_publica, caminho):
         )
 
 def salvar_endereco(endereco, caminho):
+    os.makedirs(os.path.dirname(caminho), exist_ok=True)
     with open(caminho, "w") as f:
         json.dump({"address": endereco}, f)
 

@@ -59,6 +59,15 @@ class BalueApp:
         self.address_label = tk.Label(self.main_frame, text=f"Endereço Balue: {self.wallet.address}", font=("Arial", 14))
         self.address_label.pack(pady=10)
 
+        # Botão para copiar o endereço
+        def copy_address():
+            self.root.clipboard_clear()  # Limpa o conteúdo atual da área de transferência
+            self.root.clipboard_append(self.wallet.address)  # Copia o endereço para a área de transferência
+            messagebox.showinfo("Copiado", "Endereço copiado para a área de transferência!")
+
+        copy_button = tk.Button(self.main_frame, text="Copiar Endereço", command=copy_address)
+        copy_button.pack(pady=5)
+
         self.status_label = tk.Label(self.main_frame, text="Sistema Online", font=("Arial", 12))
         self.status_label.pack(pady=10)
 

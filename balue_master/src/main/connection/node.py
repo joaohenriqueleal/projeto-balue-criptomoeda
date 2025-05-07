@@ -15,15 +15,24 @@ class Node:
         self.port = port
 
     def save_peers(self):
-        with open(self.peers_path, 'w', encoding='utf-8') as peers:
-            json.dump(self.peers, peers, ensure_ascii=False, indent=4)
+        caminho = os.path.join('balue', self.peers_path)
+        if os.path.exists(caminho):
+            with open(caminho, 'w', encoding='utf-8') as chain_file:
+                json.dump(self.peers, chain_file, ensure_ascii=False, indent=4)
+        else:
+            os.makedirs('balue', exist_ok=True)
+            caminho = os.path.join('balue', self.peers_path)
+            with open(caminho, 'w', encoding='utf-8') as chain_file:
+                json.dump(self.peers, chain_file, ensure_ascii=False, indent=4)
 
     def load_peers(self):
-        if os.path.exists(self.peers_path):
-            with open(self.peers_path, 'r', encoding='utf-8') as peers:
-                self.peers = json.load(peers)
+        caminho = os.path.join('balue', self.peers_path)
+        if os.path.exists(caminho):
+            with open(caminho, 'r', encoding='utf-8') as chain_file:
+                self.peers = json.load(chain_file)
         else:
             self.save_peers()
+
 
     def get_local_ip(self):
         try:
@@ -179,3 +188,4 @@ class Node:
                     break
 
         self.add_peer(addr[0], self.port)
+
