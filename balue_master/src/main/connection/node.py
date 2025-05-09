@@ -1,4 +1,5 @@
 from src.main.mine.miner import *
+import ipaddress
 import socket
 import requests
 import threading
@@ -67,6 +68,7 @@ class Node:
 
     def start_node(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         s.bind(('0.0.0.0', self.port))
         s.listen(10)
         while True:
@@ -188,4 +190,3 @@ class Node:
                     break
 
         self.add_peer(addr[0], self.port)
-
