@@ -41,7 +41,23 @@
 
 ## Objetivo da BALUE
 
-A BALUE foi criada com o objetivo de libertar as pessoas da centralização do Estado e da constante perda do poder de compra promovida por sistemas monetários inflacionários.
+A BALUE tem como objetivo proporcionar uma infraestrutura descentralizada para transações digitais, utilizando criptografia moderna e mecanismos justos de mineração, reforçando os princípios de segurança, escassez programada e transparência distribuída.
 
-Ela busca devolver o controle financeiro aos indivíduos, garantindo que cada unidade de valor preservada na blockchain represente verdadeiramente o esforço e a liberdade de quem a possui.  
-Através de um sistema descentralizado, escasso e imune à manipulação central, a BALUE promove a soberania econômica e protege a riqueza contra a corrosão do tempo e da política.
+---
+
+## Tutorial: Como Rodar um Node BALUE
+
+Você pode executar um nó BALUE de diferentes formas, dependendo da sua preferência por **linha de comando**, **interface gráfica** ou um **executável pré-compilado para Linux**.
+
+### Pré-requisitos (caso queira rodar via código-fonte)
+
+Antes de iniciar, verifique se você tem:
+
+- **Python 3.10 ou superior**
+- **pip** instalado
+- Uma IDE como *VS Code*, *PyCharm*, ou o terminal
+
+Instale as dependências com:
+
+```bash
+pip install -r requirements.txt
