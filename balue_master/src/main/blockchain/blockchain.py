@@ -202,7 +202,7 @@ class Blockchain:
             print('~' * 80)
 
     def formatar_timestamp(self, timestamp_ns: int) -> str:
-        timestamp_s = timestamp_ns / 1_000_000_000  # converte nanosegundos para segundos
+        timestamp_s = timestamp_ns / 1_000_000_000
         data = datetime.fromtimestamp(timestamp_s)
         return data.strftime('%d/%m/%Y: %H:%M:%S')
 
@@ -222,10 +222,8 @@ class Blockchain:
         interval_adjust = 2016
         initial_difficulty = 6
         tempo_alvo = 600000000000 # 10 minutos em nanosegundos.
-
         if len(self.chain) < interval_adjust:
             return initial_difficulty
-
         timestamps = []
         soma = 0
         media = 0
@@ -256,32 +254,24 @@ class Blockchain:
         interval_adjust = 2016
         initial_difficulty = 6
         tempo_alvo = 600000000000  # 10 minutos em nanosegundos.
-
         if index < interval_adjust:
             return initial_difficulty
-
         timestamps = []
         blocks = self.get_blocks_until_index(index, interval_adjust)
-
         for block in blocks:
             timestamps.append(block["timestamp"])
-
         soma = 0
         for i in range(1, len(timestamps)):
             actual = timestamps[i]
             prev = timestamps[i - 1]
             diference = abs(actual - prev)
             soma += diference
-
         media = soma // (len(timestamps) - 1)
-
         last_block_difficulty = self.chain[index - 1]["difficulty"]
-
         if media >= tempo_alvo:
             return last_block_difficulty - 1
         else:
             return last_block_difficulty + 1
-
     def adjust_reward(self):
         initial_reward = 3.125
         halving_interval = 300_000
@@ -297,6 +287,5 @@ class Blockchain:
             return 0.01
         return initial_reward / (2 ** halvings)
     def adjust_mining_fees(self): return 0.00000010 # 10 balíns fixos.
-
 
 b = Blockchain()

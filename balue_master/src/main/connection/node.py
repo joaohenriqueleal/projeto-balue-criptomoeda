@@ -1,5 +1,4 @@
 from src.main.mine.miner import *
-import ipaddress
 import socket
 import requests
 import threading
@@ -33,7 +32,6 @@ class Node:
                 self.peers = json.load(chain_file)
         else:
             self.save_peers()
-
 
     def get_local_ip(self):
         try:
@@ -184,9 +182,7 @@ class Node:
                                 break
                     else:
                         break
-
                 except Exception as e:
                     print(f"[ERRO] Falha no handle: {e}")
                     break
-
         self.add_peer(addr[0], self.port)
