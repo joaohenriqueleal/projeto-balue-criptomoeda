@@ -220,7 +220,7 @@ class Blockchain:
 
     def adjust_difficulty(self):
         interval_adjust = 2016
-        initial_difficulty = 6
+        initial_difficulty = 4
         tempo_alvo = 600000000000 # 10 minutos em nanosegundos.
         if len(self.chain) < interval_adjust:
             return initial_difficulty
@@ -252,7 +252,7 @@ class Blockchain:
 
     def verify_difficulty(self, index):
         interval_adjust = 2016
-        initial_difficulty = 6
+        initial_difficulty = 4
         tempo_alvo = 600000000000  # 10 minutos em nanosegundos.
         if index < interval_adjust:
             return initial_difficulty
@@ -273,14 +273,14 @@ class Blockchain:
         else:
             return last_block_difficulty + 1
     def adjust_reward(self):
-        initial_reward = 3.125
+        initial_reward = 6.25
         halving_interval = 300_000
         halvings = self.index() // halving_interval
         if initial_reward / (2 ** halvings) < 0.01:
             return 0.01
         return initial_reward / (2 ** halvings)
     def verify_reward(self, index):
-        initial_reward = 3.125
+        initial_reward = 6.25
         halving_interval = 300_000
         halvings = index // halving_interval
         if initial_reward / (2 ** halvings) < 0.01:
