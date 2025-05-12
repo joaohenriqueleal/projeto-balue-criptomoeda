@@ -106,12 +106,13 @@ class Node:
                 continue
 
     def broadcast_total_chain(self, ip, port, len):
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect((ip, port))
-            s.sendall(json.dumps(b.chain[len:]).encode())
-        except Exception as e:
-            print(e)
+        for bl in b.chain[len:]:
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect((ip, port))
+                s.sendall(json.dumps(bl).encode())
+            except Exception as e:
+                print(e)
 
     def broadcast_peers(self):
         all_peers = [{"ip": self.public_ip, "port": self.port}, {"ip": self.local_ip, "port": self.port}] + self.peers
@@ -128,16 +129,18 @@ class Node:
         with conn:
             while True:
                 try:
-                    data = conn.recv(20048).decode()
+                    data = conn.recv(20000048).decode()
                     if not data:
                         break
                     block = json.loads(data)
                     if isinstance(block, dict) and block.get("type") == "r_c":
-                        thread_broadcast_total_chain = threading.Thread(
-                            target=self.broadcast_total_chain,
-                            args=(addr[0], block["port"], block.get("len"))
-                        )
-                        thread_broadcast_total_chain.start()
+                        if len(b.chain) > block.get("len"):
+                            thread_broadcast_total_chain = threading.Thread(
+                                target=self.broadcast_total_chain,
+                                args=(addr[0], block["port"], block.get("len"))
+                            )
+                            thread_broadcast_total_chain.start()
+                        else: break
                     elif isinstance(block, list) and block and isinstance(block[0], dict) and block[0].get('ip'):
                         for peer in block:
                             self.add_peer(peer["ip"], peer["port"])
