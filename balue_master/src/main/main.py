@@ -1,4 +1,4 @@
-from src.sec.connection.node import *
+from src.main.connection.node import *
 from decimal import Decimal
 from datetime import datetime
 
