@@ -403,7 +403,7 @@ class BalueTkinterApp:
 
         for peer in self.node.peers:
             text_area.insert(tk.END, f"Endereço:  {peer['ip']}:{peer['port']}\n")
-            text_area.insert(tk.END, "~" * 60 + "\n")
+            text_area.insert(tk.END, "~" * 47 + "\n")
 
         if not self.node.peers:
             text_area.insert(tk.END, "Nenhum peer conhecido.")
