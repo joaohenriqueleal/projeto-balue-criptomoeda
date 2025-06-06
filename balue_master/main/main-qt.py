@@ -225,6 +225,16 @@ class BalueTkinterApp:
                 valor = float(valor_entry.get())
                 descricao = descricao_entry.get().strip() or "0"
 
+                if len(descricao) > 80:
+                    messagebox.showerror("Erro",
+                                         f"Descrição muito grande! Max de 80 caractéres.")
+                    return
+
+                if valor == 0:
+                    messagebox.showerror("Erro",
+                                         f"Valor da transação deve ser acima de zero!")
+                    return
+
                 fees = chain_state.calculate_fees(valor)
                 total = valor + fees
 

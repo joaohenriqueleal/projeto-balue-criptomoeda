@@ -57,6 +57,10 @@ def main() -> None:
                         print('\033[;31mDescrição muito grande! Cancelada! Máximo 80 caractéres.\033[m')
                         print('=' * 60)
                         continue
+                    if valor == 0:
+                        print('\033[;31mO valor deve ser maior que zero!')
+                        print('=' * 60)
+                        continue
                 except:
                     print('\033[;31mDigite um valor válido!\033[m')
                     continue

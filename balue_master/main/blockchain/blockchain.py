@@ -141,6 +141,8 @@ class Blockchain:
                     return False
                 if len(tr["metadata"]) > 80:
                     return False
+                if tr["value"] == 0:
+                    return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
                     return False
@@ -163,6 +165,8 @@ class Blockchain:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
                 if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                    return False
+                if tr["value"] == 0:
                     return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
@@ -217,6 +221,8 @@ class Blockchain:
                     return False
                 if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
                     return False
+                if tr["value"] == 0:
+                    return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
                     return False
@@ -263,6 +269,8 @@ class Blockchain:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
                 if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                    return False
+                if tr["value"] == 0:
                     return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
