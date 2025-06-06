@@ -1,4 +1,4 @@
-from sec.p2p_protocol.node import *
+from p2p_protocol.node import *
 from decimal import Decimal
 from datetime import datetime, timezone
 

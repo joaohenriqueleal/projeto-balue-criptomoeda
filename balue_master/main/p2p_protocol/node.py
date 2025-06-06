@@ -1,4 +1,4 @@
-from main.mine.miner import *
+from mine.miner import *
 import socket
 import threading
 import requests

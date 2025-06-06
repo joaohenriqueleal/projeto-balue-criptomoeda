@@ -1,4 +1,4 @@
-from main.blockchain.transaction import *
+from blockchain.transaction import *
 
 
 class Block:

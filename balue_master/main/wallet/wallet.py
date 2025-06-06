@@ -1,4 +1,4 @@
-from main.wallet.wallet_keys import *
+from wallet.wallet_keys import *
 import os
 
 

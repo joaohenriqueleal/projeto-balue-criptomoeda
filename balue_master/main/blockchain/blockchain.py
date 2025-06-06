@@ -1,5 +1,5 @@
-from main.blockchain.block import *
-from main.wallet.wallet import *
+from blockchain.block import *
+from wallet.wallet import *
 import os
 
 

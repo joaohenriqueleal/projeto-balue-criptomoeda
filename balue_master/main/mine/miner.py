@@ -1,4 +1,4 @@
-from main.blockchain.blockchain import *
+from blockchain.blockchain import *
 
 class Miner:
 
