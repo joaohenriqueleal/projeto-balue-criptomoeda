@@ -53,6 +53,10 @@ def main() -> None:
                     valor = float(input('Valor da transação:  B$'))
                     descricao = str(input('Descrição (opcional):  ')).strip()
                     if not descricao: descricao = "0"
+                    if len(descricao) > 80:
+                        print('\033[;31mDescrição muito grande! Cancelada! Máximo 80 caractéres.\033[m')
+                        print('=' * 60)
+                        continue
                 except:
                     print('\033[;31mDigite um valor válido!\033[m')
                     continue
@@ -73,7 +77,7 @@ def main() -> None:
                     else:
                         if confirmacao in 'sy':
                             t = Transaction(wallet.address, destino, valor, chain_state.calculate_fees(valor),
-                                            chave_publica_para_json(wallet.public_key), destino,
+                                            chave_publica_para_json(wallet.public_key), descricao,
                                             chain_state.transactions_difficulty())
                             t.signature = assinatura_para_json(assinar_hash(wallet.private_key, t.hash))
                             chain_state.add_transaction_to_pending(t)
