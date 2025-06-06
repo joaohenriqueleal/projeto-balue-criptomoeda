@@ -122,6 +122,10 @@ class Blockchain:
                 return False
             if blk["total_fees"] != self.calculate_total_fees(blk):
                 return False
+            if blk["timestamp"] < 1749209387667023055:
+                return False
+            if blk["mine_timestamp"]:
+                return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
@@ -136,6 +140,8 @@ class Blockchain:
                                             json_para_assinatura(tr["signature"])):
                     return False
                 if tr["metadata"] is None:
+                    return False
+                if tr["timestamp"] < blk["timestamp"]:
                     return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
@@ -151,6 +157,10 @@ class Blockchain:
                 return False
             if blk["total_fees"] != self.calculate_total_fees(blk):
                 return False
+            if blk["timestamp"] < self.chain[-1]["timestamp"]:
+                return False
+            if blk["mine_timestamp"]:
+                return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
@@ -168,6 +178,8 @@ class Blockchain:
                                             json_para_assinatura(tr["signature"])):
                     return False
                 if tr["metadata"] is None:
+                    return False
+                if tr["timestamp"] < blk["timestamp"]:
                     return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
@@ -192,6 +204,11 @@ class Blockchain:
                 return False
             if current_block["total_fees"] != self.calculate_total_fees(current_block):
                 return False
+            if current_block["timestamp"] < 1749209387667023055:
+                return False
+            if current_block["mine_timestamp"]:
+                if current_block["mine_timestamp"] < current_block["timestamp"]:
+                    return False
             if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
                                         current_block["miner_address"],
                                         bytes.fromhex(current_block["hash"]),
@@ -208,6 +225,8 @@ class Blockchain:
                 if tr["difficulty"] != self.transactions_difficulty():
                     return False
                 if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                    return False
+                if tr["timestamp"] < current_block["timestamp"]:
                     return False
                 if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
                                         tr["sender"], bytes.fromhex(tr["hash"]),
@@ -232,6 +251,11 @@ class Blockchain:
                 return False
             if current_block["total_fees"] != self.calculate_total_fees(current_block):
                 return False
+            if current_block["timestamp"] < previous_block["timestamp"]:
+                return False
+            if current_block["mine_timestamp"]:
+                if current_block["mine_timestamp"] < current_block["timestamp"]:
+                    return False
             if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
                                         current_block["miner_address"],
                                         bytes.fromhex(current_block["hash"]),
@@ -248,6 +272,8 @@ class Blockchain:
                 if tr["difficulty"] != self.transactions_difficulty():
                     return False
                 if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                    return False
+                if tr["timestamp"] < current_block["timestamp"]:
                     return False
                 if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
                                         tr["sender"], bytes.fromhex(tr["hash"]),
@@ -288,7 +314,7 @@ class Blockchain:
 
     def adjust_difficulty(self, index: int) -> int:
         target_time = 600_000_000_000
-        initial_difficulty = 6
+        initial_difficulty = 4
         interval_adjust = 2016
         adjust = 2
 
