@@ -21,17 +21,17 @@
 
 ## Mineração e Recompensa
 
-**Recompensa inicial:** 12.5 BALUE
+**Recompensa inicial:** 25
 
-**Halving:** A cada 250.000 blocos (redução pela metade)
+**Halving:** A cada 420.000 blocos (redução pela metade)
 
 ### Exemplo de Halvings
 | Bloco | Recompensa |
 |-------|------------|
-| 0 | 12.5 |
-| 250_000 | 6.25 |
-| 500_000 | 3.125 |
-| 750_000 | 1.5625 |
+| 0 | 25 |
+| 420_000 | 12.5 |
+| 840_000 | 6.25 |
+| 1_680_000 | 3.125 |
 | ... | ... |
 
 ## Como Rodar um Nó
@@ -45,7 +45,7 @@
 | Versão | Arquivo | Tipo |
 |--------|---------|------|
 | Linha de comando | `main.py` | Terminal |
-| Interface gráfica | `mainqt.py` | GUI |
+| Interface gráfica | `main-qt.py` | GUI |
 
 ### Execução via IDE
 1. Abra o projeto

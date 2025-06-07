@@ -360,8 +360,8 @@ class Blockchain:
 
     def adjust_reward(self, index: int) -> float:
         max_suply = 18_000_000
-        interval_halving = 250_000
-        initial_reward = 12.5
+        interval_halving = 420_000
+        initial_reward = 25
 
         total_coins = 0
         rewards = [blk["reward"] for blk in self.chain]
