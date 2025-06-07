@@ -336,7 +336,7 @@ class Blockchain:
 
     def adjust_difficulty(self, index: int) -> int:
         target_time = 600_000_000_000
-        initial_difficulty = 4
+        initial_difficulty = 6
         interval_adjust = 2016
         adjust = 2
 
