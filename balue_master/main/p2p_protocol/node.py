@@ -11,13 +11,23 @@ class Node:
         os.makedirs(os.path.dirname(self.peers_path), exist_ok=True)
 
         self.public_ip = self.get_public_ip()
-        self.local_ip = '127.0.0.1'
+        self.local_ip = self.get_local_ip()
         self.port = port
         self.peers = []
         self.load_peers()
 
         thread_node = threading.Thread(target=self.start_node)
         thread_node.start()
+
+    def get_local_ip(self):
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            s.close()
+            return ip
+        except Exception as e:
+            return f"Erro ao obter IP: {e}"
 
     def get_public_ip(self):
         try:

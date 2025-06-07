@@ -298,7 +298,7 @@ class BalueTkinterApp:
 
     def consultar_ip_porta(self):
         self.node.peer_infos()
-        info = f"IP: {self.node.local_ip}\nPorta: {self.node.port}"
+        info = f"IP público: {self.node.public_ip}\nIP local: {self.node.local_ip}\nPorta: {self.node.port}"
         messagebox.showinfo("Informações do Node", info)
         threading.Thread(target=self.node.request_chain).start()
 
