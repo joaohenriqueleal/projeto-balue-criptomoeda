@@ -247,6 +247,7 @@ class BalueTkinterApp:
                                               f"O valor mais as taxas ficará: {total:.8f} B$\nConfirmar transferência?")
 
                 if confirm:
+                    chain_state.new_pending_block()
                     t = Transaction(
                         self.wallet.address,
                         destino,

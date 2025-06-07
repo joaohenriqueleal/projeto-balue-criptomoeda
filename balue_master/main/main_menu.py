@@ -80,6 +80,7 @@ def main() -> None:
                         print('=' * 60)
                     else:
                         if confirmacao in 'sy':
+                            chain_state.new_pending_block()
                             t = Transaction(wallet.address, destino, valor, chain_state.calculate_fees(valor),
                                             chave_publica_para_json(wallet.public_key), descricao,
                                             chain_state.transactions_difficulty())

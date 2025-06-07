@@ -137,6 +137,10 @@ class Blockchain:
                                             tr["sender"], bytes.fromhex(tr["hash"]),
                                             json_para_assinatura(tr["signature"])):
                     return False
+                if tr["timestamp"] < blk["timestamp"]:
+                    return False
+                if tr["validation_timestamp"] < tr["timestamp"]:
+                    return False
                 if tr["metadata"] is None:
                     return False
                 if len(tr["metadata"]) > 80:
@@ -178,6 +182,10 @@ class Blockchain:
                 if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
                                             tr["sender"], bytes.fromhex(tr["hash"]),
                                             json_para_assinatura(tr["signature"])):
+                    return False
+                if tr["timestamp"] < blk["timestamp"]:
+                    return False
+                if tr["validation_timestamp"] < tr["timestamp"]:
                     return False
                 if tr["metadata"] is None:
                     return False
@@ -234,6 +242,10 @@ class Blockchain:
                                         tr["sender"], bytes.fromhex(tr["hash"]),
                                         json_para_assinatura(tr["signature"])):
                     return False
+                if tr["timestamp"] < current_block["timestamp"]:
+                    return False
+                if tr["validation_timestamp"] < tr["timestamp"]:
+                    return False
                 if tr["metadata"] is None:
                     return False
                 if len(tr["metadata"]) > 80:
@@ -283,6 +295,10 @@ class Blockchain:
                                         tr["sender"], bytes.fromhex(tr["hash"]),
                                         json_para_assinatura(tr["signature"])):
                     return False
+                if tr["timestamp"] < current_block["timestamp"]:
+                    return False
+                if tr["validation_timestamp"] < tr["timestamp"]:
+                    return False
                 if tr["metadata"] is None:
                     return False
                 if len(tr["metadata"]) > 80:
@@ -320,7 +336,7 @@ class Blockchain:
 
     def adjust_difficulty(self, index: int) -> int:
         target_time = 600_000_000_000
-        initial_difficulty = 6
+        initial_difficulty = 4
         interval_adjust = 2016
         adjust = 2
 
@@ -365,4 +381,3 @@ class Blockchain:
 
 
 chain_state = Blockchain()
-
