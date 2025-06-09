@@ -1,4 +1,5 @@
 from mine.miner import *
+import ipaddress
 import socket
 import threading
 import requests
@@ -46,12 +47,23 @@ class Node:
                 self.peers = json.load(peers_file)
         else: self.save_peers()
 
-    def add_peer(self, ip, port) -> bool:
+    def ip_is_valid(self, ip: str) -> bool:
+        try:
+            ipaddress.ip_address(ip)
+            return True
+        except ValueError:
+            return False
+
+    def add_peer(self, ip: str, port: int) -> bool:
         if (ip == self.local_ip or ip == self.public_ip) and self.port == port:
             return False
         for peer in self.peers:
             if peer["ip"] == ip and peer["port"] == port:
                 return False
+        if not self.ip_is_valid(ip):
+            return False
+        if port < 1024 or port > 49151:
+            return False
         new_peer = {"ip": ip, "port": port}
         self.peers.append(new_peer)
         self.save_peers()
