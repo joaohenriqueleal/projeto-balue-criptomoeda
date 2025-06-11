@@ -6,6 +6,16 @@ import os
 class Blockchain:
 
     def __init__(self):
+        # Constantes de config do protocolo.
+        self.target_time = 600_000_000_000
+        self.percent_fees = 0.5
+        self.max_suply = 18_000_000
+        self.interval_halving = 420_000
+        self.initial_reward = 25
+        self.initial_difficulty = 6
+        self.interval_adjust = 2016
+        self.adjust = 2
+        
         self.chain_path = 'balue/blockchain.json'
         self.chain = []
         os.makedirs(os.path.dirname(self.chain_path), exist_ok=True)
@@ -335,49 +345,39 @@ class Blockchain:
         return balance
 
     def adjust_difficulty(self, index: int) -> int:
-        target_time = 600_000_000_000
-        initial_difficulty = 6
-        interval_adjust = 2016
-        adjust = 2
-
-        if index < interval_adjust + 1:
-            return initial_difficulty
+        if index < self.interval_adjust + 1:
+            return self.initial_difficulty
 
         total_time = 0
-        for i in range(index - interval_adjust, index):
+        for i in range(index - self.interval_adjust, index):
             prev_timestamp = self.chain[i - 1]["mine_timestamp"]
             curr_timestamp = self.chain[i]["mine_timestamp"]
             time_diff = curr_timestamp - prev_timestamp
             total_time += time_diff
 
-        average_time = total_time / interval_adjust
+        average_time = total_time / self.interval_adjust
         previous_difficulty = self.chain[index - 1]["difficulty"]
 
-        if average_time > target_time:
-            return max(initial_difficulty, previous_difficulty - adjust)
+        if average_time > self.target_time:
+            return max(self.initial_difficulty, previous_difficulty - self.adjust)
         else:
-            return previous_difficulty + adjust
+            return previous_difficulty + self.adjust
 
     def adjust_reward(self, index: int) -> float:
-        max_suply = 18_000_000
-        interval_halving = 420_000
-        initial_reward = 25
-
         total_coins = 0
         rewards = [blk["reward"] for blk in self.chain]
         for r in rewards: total_coins += r
-        if total_coins >= max_suply: return 0
+        if total_coins >= self.max_suply: return 0
 
-        halving_count = index // interval_halving
-        reward = initial_reward / (2 ** halving_count)
+        halving_count = index // self.interval_halving
+        reward = self.initial_reward / (2 ** halving_count)
         reward = max(reward, 0.00000001)
         return round(reward, 8)
 
     def transactions_difficulty(self) -> int: return 4
 
     def calculate_fees(self, value: float) -> float:
-        percent_fees = 0.5
-        return round(value * (percent_fees / 100), 8)
+        return round(value * (self.percent_fees / 100), 8)
 
 
 chain_state = Blockchain()
