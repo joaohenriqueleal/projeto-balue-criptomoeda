@@ -1,5 +1,11 @@
 # BALUE - Blockchain Descentralizada
 
+## 👥 Comunidade Balue
+
+Junte-se à nossa comunidade no Discord para discutir ideias, tirar dúvidas, contribuir com o desenvolvimento ou apenas bater papo!
+
+[👉 Entrar no Discord](https://discord.gg/WKmwVXtm)
+
 **BALUE** é uma blockchain peer-to-peer (P2P) desenvolvida para transações descentralizadas e seguras.
 
 ## Funcionamento Geral
