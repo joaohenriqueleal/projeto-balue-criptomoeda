@@ -246,7 +246,7 @@ class BalueTkinterApp:
                 confirm = messagebox.askyesno("Confirmar",
                                               f"O valor mais as taxas ficará: {total:.8f} B$\nConfirmar transferência?")
                 if len(chain_state.pending_block) > 0:
-                    if len(chain_state.pending_block[0].transactions) > chain_state.max_transactions_per_block:
+                    if len(chain_state.pending_block[0].transactions) + 1 > chain_state.max_transactions_per_block:
                         messagebox.showerror("Erro",
                                              f"Bloco pendente está cheio!")
                         return

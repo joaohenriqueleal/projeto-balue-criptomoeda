@@ -48,7 +48,7 @@ def main() -> None:
                 print(f'Endereço Balue:  {wallet.address}')
                 print('=' * 60)
             elif option == 3:
-                if len(chain_state.pending_block[0].transactions) > chain_state.max_transactions_per_block:
+                if len(chain_state.pending_block[0].transactions) + 1 > chain_state.max_transactions_per_block:
                     print('\033[;31mO bloco pendente está cheio no momento!\033[m')
                     continue
                 try:
@@ -61,7 +61,7 @@ def main() -> None:
                         print('=' * 60)
                         continue
                     if valor == 0:
-                        print('\033[;31mO valor deve ser maior que zero!')
+                        print('\033[;31mO valor deve ser maior que zero!\033[m')
                         print('=' * 60)
                         continue
                 except:
@@ -83,6 +83,7 @@ def main() -> None:
                         print('=' * 60)
                     else:
                         if confirmacao in 'sy':
+                            chain_state.new_pending_block()
                             t = Transaction(wallet.address, destino, valor, chain_state.calculate_fees(valor),
                                             chave_publica_para_json(wallet.public_key), descricao,
                                             chain_state.transactions_difficulty())
