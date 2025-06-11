@@ -15,7 +15,8 @@ class Blockchain:
         self.initial_difficulty = 6
         self.interval_adjust = 2016
         self.adjust = 2
-        
+        self.max_transactions_per_block = 10_000
+
         self.chain_path = 'balue/blockchain.json'
         self.chain = []
         os.makedirs(os.path.dirname(self.chain_path), exist_ok=True)
@@ -134,6 +135,8 @@ class Blockchain:
                 return False
             if blk["timestamp"] < 1749316059171997844:
                 return False
+            if len(blk["transactions"]) > self.max_transactions_per_block:
+                return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
@@ -174,6 +177,8 @@ class Blockchain:
             if blk["timestamp"] < self.chain[-1]["timestamp"]:
                 return False
             if blk["mine_timestamp"]:
+                return False
+            if len(blk["transactions"]) > self.max_transactions_per_block:
                 return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
@@ -234,6 +239,10 @@ class Blockchain:
                                         bytes.fromhex(current_block["hash"]),
                                         json_para_assinatura(current_block["miner_signature"])):
                 return False
+            if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
+                return False
+            if len(current_block["transactions"]) > self.max_transactions_per_block:
+                return False
             for tr in current_block["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
@@ -282,6 +291,10 @@ class Blockchain:
             if current_block["mine_timestamp"]:
                 if current_block["mine_timestamp"] < current_block["timestamp"]:
                     return False
+            if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
+                return False
+            if len(current_block["transactions"]) > self.max_transactions_per_block:
+                return False
             if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
                                         current_block["miner_address"],
                                         bytes.fromhex(current_block["hash"]),
@@ -362,6 +375,18 @@ class Blockchain:
             return max(self.initial_difficulty, previous_difficulty - self.adjust)
         else:
             return previous_difficulty + self.adjust
+
+    def min_transactions_block(self, index: int) -> int:
+        start = max(0, index - self.interval_adjust)
+        total_blocos = index - start
+        if total_blocos == 0:
+            return 0
+
+        soma = 0
+        for i in range(start, index):
+            soma += len(self.chain[i]["transactions"])
+
+        return soma // total_blocos
 
     def adjust_reward(self, index: int) -> float:
         total_coins = 0

@@ -48,6 +48,9 @@ def main() -> None:
                 print(f'Endereço Balue:  {wallet.address}')
                 print('=' * 60)
             elif option == 3:
+                if len(chain_state.pending_block[0].transactions) > chain_state.max_transactions_per_block:
+                    print('\033[;31mO bloco pendente está cheio no momento!\033[m')
+                    continue
                 try:
                     destino = str(input('Endereço balue do destinatário:  ')).strip()
                     valor = float(input('Valor da transação:  B$'))
@@ -80,7 +83,6 @@ def main() -> None:
                         print('=' * 60)
                     else:
                         if confirmacao in 'sy':
-                            chain_state.new_pending_block()
                             t = Transaction(wallet.address, destino, valor, chain_state.calculate_fees(valor),
                                             chave_publica_para_json(wallet.public_key), descricao,
                                             chain_state.transactions_difficulty())
@@ -95,6 +97,9 @@ def main() -> None:
                             print('=' * 60)
             elif option == 4:
                 if len(chain_state.pending_block) > 0:
+                    if len(chain_state.pending_block[0]) < chain_state.min_transactions_block(chain_state.pending_block[0].index):
+                        print('\033[;31mErro! O bloco pendente precisa de mais transações!\033[m')
+                        continue
                     now = datetime.now()
                     print(now.strftime(f'\033[;31m⛏️ Mineração iniciada em: %y-%m-%d %H:%M:%S\033[m com dificuldade {chain_state.pending_block[0].difficulty}.'))
                     print(f'\033[;31mMinerando bloco #{chain_state.pending_block[0].index}...\033[m')
