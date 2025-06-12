@@ -425,6 +425,14 @@ class BalueTkinterApp:
 
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = BalueTkinterApp(root)
-    root.mainloop()
+    if chain_state.chain_is_valid():
+        root = tk.Tk()
+        app = BalueTkinterApp(root)
+        root.mainloop()
+    else:
+        while not chain_state.chain_is_valid():
+            chain_state.chain.pop()
+        chain_state.save_chain()
+        root = tk.Tk()
+        app = BalueTkinterApp(root)
+        root.mainloop()

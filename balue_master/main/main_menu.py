@@ -185,6 +185,11 @@ def main() -> None:
                 continue
 
 
-
 if __name__ == '__main__':
-    main()
+    if chain_state.chain_is_valid():
+        main()
+    else:
+        while not chain_state.chain_is_valid():
+            chain_state.chain.pop()
+        chain_state.save_chain()
+        main()
