@@ -29,15 +29,15 @@ Junte-se à nossa comunidade no Discord para discutir ideias, tirar dúvidas, co
 
 **Recompensa inicial:** 25
 
-**Halving:** A cada 420.000 blocos (redução pela metade)
+**Halving:** A cada 360.000 blocos (redução pela metade)
 
 ### Exemplo de Halvings
 | Bloco | Recompensa |
 |-------|------------|
 | 0 | 25 |
-| 420_000 | 12.5 |
-| 840_000 | 6.25 |
-| 1_680_000 | 3.125 |
+| 360_000 | 12.5 |
+| 720_000 | 6.25 |
+| 1_440_000 | 3.125 |
 | ... | ... |
 
 ## Como Rodar um Nó
