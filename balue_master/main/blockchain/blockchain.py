@@ -10,7 +10,7 @@ class Blockchain:
         self.target_time = 600_000_000_000
         self.percent_fees = 0.5
         self.max_suply = 18_000_000
-        self.interval_halving = 420_000
+        self.interval_halving = 360_000
         self.initial_reward = 25
         self.initial_difficulty = 6
         self.interval_adjust = 2016
