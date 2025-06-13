@@ -20,6 +20,7 @@ class Miner:
             if chain_state.chain_is_valid():
                 return True
             else:
+                os.remove(f'balue/chain/{len(chain_state.chain - 1)}.json')
                 chain_state.chain.pop()
                 chain_state.save_chain()
                 return False

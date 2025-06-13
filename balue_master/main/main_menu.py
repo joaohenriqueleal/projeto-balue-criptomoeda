@@ -48,9 +48,10 @@ def main() -> None:
                 print(f'Endereço Balue:  {wallet.address}')
                 print('=' * 60)
             elif option == 3:
-                if len(chain_state.pending_block[0].transactions) + 1 > chain_state.max_transactions_per_block:
-                    print('\033[;31mO bloco pendente está cheio no momento!\033[m')
-                    continue
+                if len(chain_state.pending_block) > 0:
+                    if len(chain_state.pending_block[0].transactions) + 1 > chain_state.max_transactions_per_block:
+                        print('\033[;31mO bloco pendente está cheio no momento!\033[m')
+                        continue
                 try:
                     destino = str(input('Endereço balue do destinatário:  ')).strip()
                     valor = float(input('Valor da transação:  B$'))
@@ -98,7 +99,7 @@ def main() -> None:
                             print('=' * 60)
             elif option == 4:
                 if len(chain_state.pending_block) > 0:
-                    if len(chain_state.pending_block[0]) < chain_state.min_transactions_block(chain_state.pending_block[0].index):
+                    if len(chain_state.pending_block[0].transactions) < chain_state.min_transactions_block(chain_state.pending_block[0].index):
                         print('\033[;31mErro! O bloco pendente precisa de mais transações!\033[m')
                         continue
                     now = datetime.now()
@@ -108,7 +109,7 @@ def main() -> None:
                     if resultado:
                         now = datetime.now()
                         print(now.strftime(f'\033[;31m⛏️ Mineração Terminada em: %y-%m-%d %H:%M:%S\033[m.'))
-                        print(f'\033[;32mRecompensa de:  {chain_state.chain[-1]["reward"]} B$ adicionada!\033[m')
+                        print(f'\033[;32mRecompensa de:  {chain_state.load_block(len(chain_state.chain) - 1)["reward"]} B$ adicionada!\033[m')
                         print(f'\033[;32mNovo saldo:  {round(Decimal(chain_state.get_balance(wallet.address)), 8):.8f} B$\033[m')
                         thread_broadcast_last_block = threading.Thread(target=node.broadcast_last_block)
                         thread_broadcast_last_block.start()
@@ -140,7 +141,8 @@ def main() -> None:
             elif option == 7:
                 print('DESCRIÇÕES DE TRANSAÇÕES'.center(60))
                 print('=' * 60)
-                for blk in chain_state.chain:
+                for i in range(len(chain_state.chain) - 1):
+                    blk = chain_state.load_block(i)
                     for tr in blk["transactions"]:
                         if tr["receiver"] == wallet.address and tr["metadata"] != "0":
                             timestamp_s = tr["timestamp"] / 1_000_000_000
@@ -149,11 +151,12 @@ def main() -> None:
                             print(f'De:  {tr["receiver"]}')
                             print(f'Descrição:  {tr["metadata"]}')
                             print('~' * 60)
-                    print('=' * 60)
+                print('=' * 60)
             elif option == 8:
                 print('Últimos 10 blocos da rede + o pendente em amarelo.'.center(60))
                 print('=' * 60)
-                for blk in chain_state.chain[-10:]:
+                for i in range(len(chain_state.chain[-10:])):
+                    blk = chain_state.load_block(i)
                     print(f'Bloco #{blk["index"]}, Hash:  {blk["hash"][:10]}...{blk["hash"][10:25]}...')
                     print(f'      com {len(blk["transactions"])} transações.')
                     print('~' * 60)
@@ -185,11 +188,13 @@ def main() -> None:
                 continue
 
 
+
 if __name__ == '__main__':
     if chain_state.chain_is_valid():
         main()
     else:
         while not chain_state.chain_is_valid():
+            os.remove(f'balue/chain/{len(chain_state.chain) - 1}.json')
             chain_state.chain.pop()
-        chain_state.save_chain()
+            chain_state.save_chain()
         main()

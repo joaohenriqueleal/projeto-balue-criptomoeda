@@ -17,7 +17,7 @@ class Blockchain:
         self.adjust = 2
         self.max_transactions_per_block = 10_000
 
-        self.chain_path = 'balue/blockchain.json'
+        self.chain_path = 'balue/chain/blockchain.json'
         self.chain = []
         os.makedirs(os.path.dirname(self.chain_path), exist_ok=True)
         self.load_chain()
@@ -58,12 +58,24 @@ class Blockchain:
         if len(self.pending_block) > 0:
             self.pending_block[0].mine_block(miner_address, miner_public_key)
 
+    def add_block(self, blk: dict) -> None:
+        with open(f'balue/chain/{blk["index"]}.json', 'w', encoding='utf-8') as block_file:
+            json.dump(blk, block_file, indent=4, ensure_ascii=False)
+        new_path = {"path": f"balue/chain/{blk['index']}.json"}
+        for path in self.chain:
+            if path == new_path: return
+        self.chain.append(new_path)
+        self.save_chain()
+
+    def load_block(self, index: int) -> dict:
+        with open(f'{self.chain[index]["path"]}', 'r', encoding='utf-8') as block:
+            return json.load(block)
+
     def add_block_to_chain(self) -> None:
         if len(self.pending_block) > 0:
             p = self.pending_block[0]
             if p.miner_address and p.hash != 0 and p.miner_signature:
-                self.chain.append(p.block_to_dict())
-                self.save_chain()
+                self.add_block(p.block_to_dict())
                 self.pending_block = []
 
     def sign_pending(self, signature: str) -> None:
@@ -75,7 +87,7 @@ class Blockchain:
     def previous_hash(self) -> str:
         if len(self.chain) == 0:
             return "0"
-        return self.chain[-1]["hash"]
+        return self.load_block(len(self.chain) - 1)["hash"]
 
     def calculate_total_fees(self, blk: dict) -> float:
         total_fees = 0
@@ -164,7 +176,7 @@ class Blockchain:
                 if sender_balance < (tr["value"] + tr["fees"]):
                     return False
         else:
-            if blk["index"] != (self.chain[-1]["index"] + 1):
+            if blk["index"] != (self.load_block(len(chain_state.chain) - 1)["index"] + 1):
                 return False
             if blk["previous_hash"] != self.previous_hash():
                 return False
@@ -174,7 +186,7 @@ class Blockchain:
                 return False
             if blk["total_fees"] != self.calculate_total_fees(blk):
                 return False
-            if blk["timestamp"] < self.chain[-1]["timestamp"]:
+            if blk["timestamp"] < self.load_block(len(chain_state.chain) - 1)["timestamp"]:
                 return False
             if blk["mine_timestamp"]:
                 return False
@@ -330,13 +342,15 @@ class Blockchain:
 
     def chain_is_valid(self) -> bool:
         for i in range(0, len(self.chain)):
+            blk = self.load_block(i)
             if i == 0:
-                current_block = self.chain[i]
+                current_block = blk
                 if not self.validate_block(current_block):
                     return False
             else:
-                current_block = self.chain[i]
-                previous_block = self.chain[i -1]
+                current_block = blk
+                prev_blk = self.load_block(i - 1)
+                previous_block = prev_blk
                 if not self.validate_block(current_block, previous_block):
                     return False
         return True
@@ -347,7 +361,8 @@ class Blockchain:
             for tr in blk.transactions:
                 if tr["sender"] == address:
                     balance -= (tr["value"] + tr["fees"])
-        for blk in self.chain:
+        for i in range(0, len(self.chain)):
+            blk = self.load_block(i)
             if blk["miner_address"] == address:
                 balance += (blk["reward"] + blk["total_fees"])
             for tr in blk["transactions"]:
@@ -363,13 +378,13 @@ class Blockchain:
 
         total_time = 0
         for i in range(index - self.interval_adjust, index):
-            prev_timestamp = self.chain[i - 1]["mine_timestamp"]
-            curr_timestamp = self.chain[i]["mine_timestamp"]
+            prev_timestamp = self.load_block(i - 1)["mine_timestamp"]
+            curr_timestamp = self.load_block(i)["mine_timestamp"]
             time_diff = curr_timestamp - prev_timestamp
             total_time += time_diff
 
         average_time = total_time / self.interval_adjust
-        previous_difficulty = self.chain[index - 1]["difficulty"]
+        previous_difficulty = self.load_block(index - 1)["difficulty"]
 
         if average_time > self.target_time:
             return max(self.initial_difficulty, previous_difficulty - self.adjust)
@@ -384,13 +399,15 @@ class Blockchain:
 
         soma = 0
         for i in range(start, index):
-            soma += len(self.chain[i]["transactions"])
+            soma += len(self.load_block(i)["transactions"])
 
         return soma // total_blocos
 
     def adjust_reward(self, index: int) -> float:
         total_coins = 0
-        rewards = [blk["reward"] for blk in self.chain]
+        rewards = []
+        for i in range(0, len(self.chain)):
+            rewards.append(self.load_block(i)["reward"])
         for r in rewards: total_coins += r
         if total_coins >= self.max_suply: return 0
 

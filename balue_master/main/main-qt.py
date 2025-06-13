@@ -27,6 +27,7 @@ class BalueTkinterApp:
 
         if not chain_state.chain_is_valid():
             while not chain_state.chain_is_valid():
+                os.remove(f'balue/chain/{len(chain_state.chain) - 1}.json')
                 chain_state.chain.pop()
 
     def create_menu_bar(self):
@@ -136,7 +137,8 @@ class BalueTkinterApp:
         self.trans_text.delete(1.0, tk.END)
 
         transactions_found = False
-        for blk in chain_state.chain[-5:][::-1]:  # Last 5 blocks, newest first
+        for i in range(len(chain_state.chain[-5:][::-1])):  # Last 5 blocks, newest first
+            blk = chain_state.load_block(i)
             for tr in blk["transactions"][::-1]:  # Reverse order to show newest first
                 if tr["receiver"] == self.wallet.address:
                     transactions_found = True
@@ -158,7 +160,8 @@ class BalueTkinterApp:
         self.blocks_text.config(state=tk.NORMAL)
         self.blocks_text.delete(1.0, tk.END)
 
-        for blk in chain_state.chain[-10:][::-1]:  # Last 10 blocks, newest first
+        for i in range(0, len(chain_state.chain[-10:][::-1])):  # Last 10 blocks, newest first
+            blk = chain_state.load_block(i)
             self.blocks_text.insert(tk.END, f"Bloco #{blk['index']}\n")
             self.blocks_text.insert(tk.END, f"Hash: {blk['hash'][:10]}...{blk['hash'][-10:]}\n")
             self.blocks_text.insert(tk.END, f"Transações: {len(blk['transactions'])}\n")
@@ -293,7 +296,7 @@ class BalueTkinterApp:
                 end_time = datetime.now()
                 messagebox.showinfo("Sucesso",
                                     f"⛏️ Mineração terminada em: {end_time.strftime('%y-%m-%d %H:%M:%S')}\n"
-                                    f"Recompensa de: {chain_state.chain[-1]['reward']} B$ adicionada!\n"
+                                    f"Recompensa de: {chain_state.load_block(len(chain_state.chain) - 1)['reward']} B$ adicionada!\n"
                                     f"Novo saldo: {round(Decimal(chain_state.get_balance(self.wallet.address)), 8):.8f} B$")
 
                 threading.Thread(target=self.node.broadcast_last_block).start()
@@ -348,7 +351,8 @@ class BalueTkinterApp:
 
         transactions_found = False
 
-        for blk in chain_state.chain:
+        for i in range(0, len(chain_state.chain)):
+            blk = chain_state.load_block(i)
             for tr in blk["transactions"]:
                 if tr["receiver"] == self.wallet.address and tr["metadata"] != "0":
                     transactions_found = True
@@ -376,7 +380,8 @@ class BalueTkinterApp:
 
         text_area.insert(tk.END, "Últimos 10 blocos da rede + o pendente:\n\n")
 
-        for blk in chain_state.chain[-10:]:
+        for i in range(0, len(chain_state.chain[-10:])):
+            blk = chain_state.load_block(i)
             text_area.insert(tk.END, f"Bloco #{blk['index']}, Hash:  {blk['hash'][:10]}...{blk['hash'][10:25]}...\n")
             text_area.insert(tk.END, f"      com {len(blk['transactions'])} transações.\n")
             text_area.insert(tk.END, "~" * 60 + "\n\n")
@@ -431,8 +436,9 @@ if __name__ == "__main__":
         root.mainloop()
     else:
         while not chain_state.chain_is_valid():
+            os.remove(f'balue/chain/{len(chain_state.chain) - 1}.json')
             chain_state.chain.pop()
-        chain_state.save_chain()
+            chain_state.save_chain()
         root = tk.Tk()
         app = BalueTkinterApp(root)
         root.mainloop()

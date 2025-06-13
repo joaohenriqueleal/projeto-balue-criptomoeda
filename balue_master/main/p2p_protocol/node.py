@@ -85,7 +85,7 @@ class Node:
                 except: continue
 
     def broadcast_last_block(self) -> None:
-        last_block = chain_state.chain[-1]
+        last_block = chain_state.load_block(len(chain_state.chain) - 1)
         for peer in self.peers:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 try:
@@ -104,8 +104,9 @@ class Node:
                     s.sendall(json.dumps(requisicao).encode())
                 except: continue
 
-    def broadcast_chain(self, len, ip, port) -> None:
-        for blk in chain_state.chain[len:]:
+    def broadcast_chain(self, length, ip, port) -> None:
+        for i in range(length, len(chain_state.chain)):
+            blk = chain_state.load_block(i)
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 try:
                     s.settimeout(5)
@@ -158,7 +159,8 @@ class Node:
                             else:
                                 break
                         else:
-                            chain_state.chain.append(data)
+                            chain_state.add_block(data)
+                            time.sleep(0.01)
                             if chain_state.chain_is_valid():
                                 chain_state.save_chain()
                                 if len(chain_state.pending_block) > 0:
@@ -167,6 +169,7 @@ class Node:
                                 else: break
                             else:
                                 chain_state.chain.pop()
+                                os.remove(f'balue/chain/{len(chain_state.chain) - 1}.json')
                     elif "type" in data:
                         thread_broadcast_chain = threading.Thread(target=self.broadcast_chain, args=(data["len"], addr[0], data["port"],))
                         thread_broadcast_chain.start()
