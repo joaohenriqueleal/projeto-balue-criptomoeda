@@ -145,7 +145,7 @@ class Blockchain:
                 return False
             if blk["total_fees"] != self.calculate_total_fees(blk):
                 return False
-            if blk["timestamp"] < 1749316059171997844:
+            if blk["timestamp"] < 1749856600218119179:
                 return False
             if len(blk["transactions"]) > self.max_transactions_per_block:
                 return False
@@ -241,7 +241,7 @@ class Blockchain:
                 return False
             if current_block["total_fees"] != self.calculate_total_fees(current_block):
                 return False
-            if current_block["timestamp"] < 1749316059171997844:
+            if current_block["timestamp"] < 1749856600218119179:
                 return False
             if current_block["mine_timestamp"]:
                 if current_block["mine_timestamp"] < current_block["timestamp"]:
