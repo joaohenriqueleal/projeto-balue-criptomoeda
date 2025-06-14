@@ -12,7 +12,7 @@ class Blockchain:
         self.max_suply = 18_000_000
         self.interval_halving = 360_000
         self.initial_reward = 25
-        self.initial_difficulty = 6
+        self.initial_difficulty = 4
         self.interval_adjust = 2016
         self.adjust = 2
         self.max_transactions_per_block = 10_000
@@ -99,6 +99,40 @@ class Blockchain:
         return hashlib.sha256(
             json.dumps(blk["transactions"], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
+    def validate_block_keys(self, blk: dict) -> bool:
+        chaves_principais = {
+            "index", "timestamp", "mine_timestamp", "id", "difficulty", "nonce",
+            "reward", "total_fees", "transactions", "merkle_root", "miner_address",
+            "miner_public_key", "miner_signature", "previous_hash", "hash"
+        }
+        if set(blk.keys()) != chaves_principais:
+            return False
+        if not isinstance(blk.get("miner_signature"), dict) or \
+                set(blk["miner_signature"].keys()) != {"signature"}:
+            return False
+        if not isinstance(blk.get("miner_public_key"), dict) or \
+                set(blk["miner_public_key"].keys()) != {"public_key"}:
+            return False
+
+        return True
+
+    def validate_transaction_keys(self, trx: dict) -> bool:
+        chaves_principais = {
+            "sender", "receiver", "value", "fees", "timestamp",
+            "validation_timestamp", "id", "metadata", "public_key",
+            "signature", "nonce", "difficulty", "hash"
+        }
+        if set(trx.keys()) != chaves_principais:
+            return False
+        if not isinstance(trx.get("public_key"), dict) or \
+                set(trx["public_key"].keys()) != {"public_key"}:
+            return False
+        if not isinstance(trx.get("signature"), dict) or \
+                set(trx["signature"].keys()) != {"signature"}:
+            return False
+
+        return True
+
     def calculate_block_hash_after_mining(self, blk: dict) -> str:
         block_dict = {
             "index": blk["index"],
@@ -145,9 +179,15 @@ class Blockchain:
                 return False
             if blk["total_fees"] != self.calculate_total_fees(blk):
                 return False
+            if blk["timestamp"] > time.time_ns():
+                return False
             if blk["timestamp"] < 1749856600218119179:
                 return False
+            if blk["mine_timestamp"]:
+                return False
             if len(blk["transactions"]) > self.max_transactions_per_block:
+                return False
+            if not self.validate_block_keys(blk):
                 return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
@@ -166,6 +206,8 @@ class Blockchain:
                     return False
                 if tr["validation_timestamp"] < tr["timestamp"]:
                     return False
+                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                    return False
                 if tr["metadata"] is None:
                     return False
                 if len(tr["metadata"]) > 80:
@@ -174,6 +216,8 @@ class Blockchain:
                     return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
+                    return False
+                if not self.validate_transaction_keys(tr):
                     return False
         else:
             if blk["index"] != (self.load_block(len(chain_state.chain) - 1)["index"] + 1):
@@ -188,9 +232,13 @@ class Blockchain:
                 return False
             if blk["timestamp"] < self.load_block(len(chain_state.chain) - 1)["timestamp"]:
                 return False
+            if blk["timestamp"] > time.time_ns():
+                return False
             if blk["mine_timestamp"]:
                 return False
             if len(blk["transactions"]) > self.max_transactions_per_block:
+                return False
+            if not self.validate_block_keys(blk):
                 return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
@@ -214,12 +262,16 @@ class Blockchain:
                     return False
                 if tr["validation_timestamp"] < tr["timestamp"]:
                     return False
+                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                    return False
                 if tr["metadata"] is None:
                     return False
                 if len(tr["metadata"]) > 80:
                     return False
                 sender_balance = self.get_balance(tr["sender"])
                 if sender_balance < (tr["value"] + tr["fees"]):
+                    return False
+                if not self.validate_transaction_keys(tr):
                     return False
         return True
 
@@ -243,8 +295,12 @@ class Blockchain:
                 return False
             if current_block["timestamp"] < 1749856600218119179:
                 return False
+            if current_block["timestamp"] > time.time_ns():
+                return False
             if current_block["mine_timestamp"]:
                 if current_block["mine_timestamp"] < current_block["timestamp"]:
+                    return False
+                if current_block["mine_timestamp"] > time.time_ns():
                     return False
             if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
                                         current_block["miner_address"],
@@ -254,6 +310,8 @@ class Blockchain:
             if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
                 return False
             if len(current_block["transactions"]) > self.max_transactions_per_block:
+                return False
+            if not self.validate_block_keys(current_block):
                 return False
             for tr in current_block["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
@@ -277,9 +335,13 @@ class Blockchain:
                     return False
                 if tr["validation_timestamp"] < tr["timestamp"]:
                     return False
+                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                    return False
                 if tr["metadata"] is None:
                     return False
                 if len(tr["metadata"]) > 80:
+                    return False
+                if not self.validate_transaction_keys(tr):
                     return False
         else:
             if current_block["index"] != (previous_block["index"] + 1):
@@ -300,8 +362,12 @@ class Blockchain:
                 return False
             if current_block["timestamp"] < previous_block["timestamp"]:
                 return False
+            if current_block["timestamp"] > time.time_ns():
+                return False
             if current_block["mine_timestamp"]:
                 if current_block["mine_timestamp"] < current_block["timestamp"]:
+                    return False
+                if current_block["mine_timestamp"] > time.time_ns():
                     return False
             if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
                 return False
@@ -311,6 +377,8 @@ class Blockchain:
                                         current_block["miner_address"],
                                         bytes.fromhex(current_block["hash"]),
                                         json_para_assinatura(current_block["miner_signature"])):
+                return False
+            if not self.validate_block_keys(current_block):
                 return False
             for tr in current_block["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
@@ -334,9 +402,13 @@ class Blockchain:
                     return False
                 if tr["validation_timestamp"] < tr["timestamp"]:
                     return False
+                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                    return False
                 if tr["metadata"] is None:
                     return False
                 if len(tr["metadata"]) > 80:
+                    return False
+                if not self.validate_transaction_keys(tr):
                     return False
         return True
 
