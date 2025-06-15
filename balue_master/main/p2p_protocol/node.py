@@ -135,6 +135,7 @@ class Node:
             conn, addr = s.accept()
             thread_handle = threading.Thread(target=self.handle, args=(conn, addr,))
             thread_handle.start()
+            time.sleep(0.1)
 
     def handle(self, conn, addr) -> None:
         with conn:
@@ -160,7 +161,6 @@ class Node:
                                 break
                         else:
                             chain_state.add_block(data)
-                            time.sleep(0.01)
                             if chain_state.chain_is_valid():
                                 chain_state.save_chain()
                                 if len(chain_state.pending_block) > 0:
@@ -169,7 +169,8 @@ class Node:
                                 else: break
                             else:
                                 chain_state.chain.pop()
-                                os.remove(f'balue/chain/{len(chain_state.chain) - 1}.json')
+                                chain_state.save_chain()
+                                os.remove(f'balue/chain/{len(chain_state.chain) + 1}.json')
                     elif "type" in data:
                         thread_broadcast_chain = threading.Thread(target=self.broadcast_chain, args=(data["len"], addr[0], data["port"],))
                         thread_broadcast_chain.start()

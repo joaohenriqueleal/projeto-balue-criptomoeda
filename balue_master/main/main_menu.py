@@ -155,25 +155,29 @@ def main() -> None:
             elif option == 8:
                 print('Últimos 10 blocos da rede + o pendente em amarelo.'.center(60))
                 print('=' * 60)
-                for i in range(len(chain_state.chain[-10:]), len(chain_state.chain)):
+
+                total_blocks = len(chain_state.chain)
+                for i in range(max(0, total_blocks - 10), total_blocks):
                     blk = chain_state.load_block(i)
                     print(f'Bloco #{blk["index"]}, Hash:  {blk["hash"][:10]}...{blk["hash"][10:25]}...')
                     print(f'      com {len(blk["transactions"])} transações.')
                     print('~' * 60)
+
                 if len(chain_state.pending_block) > 0:
                     print('=' * 60)
                     print(f'\033[;33mBloco pendente #{chain_state.pending_block[0].index}\033[m')
                     print(f'\033[;33m      com {len(chain_state.pending_block[0].transactions)} transações.\033[m')
+
                 print('=' * 60)
             elif option == 9:
-                if chain_state.new_pending_block():
-                    print('\033[;32mNovo bloco pendente adicionado!\033[m')
-                    thread_broadcast_pending = threading.Thread(target=node.broadcast_pending_block)
-                    thread_broadcast_pending.start()
-                    print('=' * 60)
-                else:
-                    print('\033[;31mHá um bloco pendente a ser minerado!\033[m')
-                    print('=' * 60)
+                    if chain_state.new_pending_block():
+                        print('\033[;32mNovo bloco pendente adicionado!\033[m')
+                        thread_broadcast_pending = threading.Thread(target=node.broadcast_pending_block)
+                        thread_broadcast_pending.start()
+                        print('=' * 60)
+                    else:
+                        print('\033[;31mHá um bloco pendente a ser minerado!\033[m')
+                        print('=' * 60)
             elif option == 10:
                 print('PEERS CONHECIDOS.'.center(60))
                 print('=' * 60)

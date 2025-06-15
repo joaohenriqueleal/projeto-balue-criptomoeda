@@ -67,9 +67,11 @@ class Blockchain:
         self.chain.append(new_path)
         self.save_chain()
 
-    def load_block(self, index: int) -> dict:
-        with open(f'{self.chain[index]["path"]}', 'r', encoding='utf-8') as block:
-            return json.load(block)
+    def load_block(self, index: int):
+        try:
+            with open(f'{self.chain[index]["path"]}', 'r', encoding='utf-8') as block:
+                return json.load(block)
+        except: pass
 
     def add_block_to_chain(self) -> None:
         if len(self.pending_block) > 0:
