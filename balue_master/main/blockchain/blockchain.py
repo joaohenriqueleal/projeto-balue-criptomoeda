@@ -12,7 +12,7 @@ class Blockchain:
         self.max_suply = 18_000_000
         self.interval_halving = 360_000
         self.initial_reward = 25
-        self.initial_difficulty = 6
+        self.initial_difficulty = 4
         self.interval_adjust = 2016
         self.adjust = 2
         self.max_transactions_per_block = 10_000
@@ -99,6 +99,14 @@ class Blockchain:
         return hashlib.sha256(
             json.dumps(blk["transactions"], sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
+    def validate_tr_hash_unicity(self, transactions: list[dict]) -> bool:
+        saw_hashes: list[str] = []
+        for tr in transactions:
+            if tr["hash"] in saw_hashes:
+                return False
+            saw_hashes.append(tr["hash"])
+        return True
+
     def calculate_block_hash_after_mining(self, blk: dict) -> str:
         block_dict = {
             "index": blk["index"],
@@ -153,6 +161,8 @@ class Blockchain:
                 return False
             if len(blk["transactions"]) > self.max_transactions_per_block:
                 return False
+            if not self.validate_tr_hash_unicity(blk["transactions"]):
+                return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
@@ -199,6 +209,8 @@ class Blockchain:
             if blk["mine_timestamp"]:
                 return False
             if len(blk["transactions"]) > self.max_transactions_per_block:
+                return False
+            if not self.validate_tr_hash_unicity(blk["transactions"]):
                 return False
             for tr in blk["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
@@ -269,6 +281,8 @@ class Blockchain:
                 return False
             if len(current_block["transactions"]) > self.max_transactions_per_block:
                 return False
+            if not self.validate_tr_hash_unicity(current_block["transactions"]):
+                return False
             for tr in current_block["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
                     return False
@@ -331,6 +345,8 @@ class Blockchain:
                                         current_block["miner_address"],
                                         bytes.fromhex(current_block["hash"]),
                                         json_para_assinatura(current_block["miner_signature"])):
+                return False
+            if not self.validate_tr_hash_unicity(current_block["transactions"]):
                 return False
             for tr in current_block["transactions"]:
                 if tr["fees"] != self.calculate_fees(tr["value"]):
