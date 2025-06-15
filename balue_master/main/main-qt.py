@@ -380,7 +380,7 @@ class BalueTkinterApp:
 
         text_area.insert(tk.END, "Últimos 10 blocos da rede + o pendente:\n\n")
 
-        for i in range(0, len(chain_state.chain[-10:])):
+        for i in range(len(chain_state.chain[-10:]), len(chain_state.chain)):
             blk = chain_state.load_block(i)
             text_area.insert(tk.END, f"Bloco #{blk['index']}, Hash:  {blk['hash'][:10]}...{blk['hash'][10:25]}...\n")
             text_area.insert(tk.END, f"      com {len(blk['transactions'])} transações.\n")

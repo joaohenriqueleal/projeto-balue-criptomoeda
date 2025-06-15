@@ -155,7 +155,7 @@ def main() -> None:
             elif option == 8:
                 print('Últimos 10 blocos da rede + o pendente em amarelo.'.center(60))
                 print('=' * 60)
-                for i in range(len(chain_state.chain[-10:])):
+                for i in range(len(chain_state.chain[-10:]), len(chain_state.chain)):
                     blk = chain_state.load_block(i)
                     print(f'Bloco #{blk["index"]}, Hash:  {blk["hash"][:10]}...{blk["hash"][10:25]}...')
                     print(f'      com {len(blk["transactions"])} transações.')
