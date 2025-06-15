@@ -1,10 +1,10 @@
 {
-    "index": 0,
-    "timestamp": 1749856600218119179,
-    "mine_timestamp": 1749856891927457704,
-    "id": "30c27c79-8347-43b3-b880-7092953b9939",
+    "index": 37,
+    "timestamp": 1749999685377631084,
+    "mine_timestamp": 1750000004036076570,
+    "id": "4e3c7a86-001c-4c17-bf51-faaa6cd8fe32",
     "difficulty": 6,
-    "nonce": 19877914,
+    "nonce": 20851428,
     "reward": 25.0,
     "total_fees": 0,
     "transactions": [],
@@ -14,8 +14,8 @@
         "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
     },
     "miner_signature": {
-        "signature": "MEUCIDgFWsImYSTUZUkQzGlV/qClpn6F9BqA47Mvpg1S9jlEAiEA6dqZI40fxQl85xYhkQbymla6Akp6XirRpAaG7cZ9SZ4="
+        "signature": "MEYCIQCYAdoZo1A8enrFxRBm9ZDNPJvvIdOgL9tknErOHQD9QgIhAI2EBeSXPm8SZz0eDMVaNdMKE6O4bkgY5/gemFvoALK1"
     },
-    "previous_hash": "0",
-    "hash": "0000008aaae4963292804618215851c06822a6f325fcb9dc3db738c560628ad1"
+    "previous_hash": "000000c17309e008f0bb352f50940a4ae5b4631596dc9e3ee3ac036bddf15216",
+    "hash": "000000fee5f16b529bbb884fa2bb1453048b546e5c4f92cf69b619202f7720cc"
 }

@@ -98,28 +98,30 @@ def main() -> None:
                             print('\033[;31mTransação cancelada!\033[m')
                             print('=' * 60)
             elif option == 4:
-                if len(chain_state.pending_block) > 0:
-                    if len(chain_state.pending_block[0].transactions) < chain_state.min_transactions_block(chain_state.pending_block[0].index):
-                        print('\033[;31mErro! O bloco pendente precisa de mais transações!\033[m')
-                        continue
-                    now = datetime.now()
-                    print(now.strftime(f'\033[;31m⛏️ Mineração iniciada em: %y-%m-%d %H:%M:%S\033[m com dificuldade {chain_state.pending_block[0].difficulty}.'))
-                    print(f'\033[;31mMinerando bloco #{chain_state.pending_block[0].index}...\033[m')
-                    resultado = miner.mine()
-                    if resultado:
+                while True:
+                    if len(chain_state.pending_block) > 0:
+                        if len(chain_state.pending_block[0].transactions) < chain_state.min_transactions_block(chain_state.pending_block[0].index):
+                            print('\033[;31mErro! O bloco pendente precisa de mais transações!\033[m')
+                            continue
                         now = datetime.now()
-                        print(now.strftime(f'\033[;31m⛏️ Mineração Terminada em: %y-%m-%d %H:%M:%S\033[m.'))
-                        print(f'\033[;32mRecompensa de:  {chain_state.load_block(len(chain_state.chain) - 1)["reward"]} B$ adicionada!\033[m')
-                        print(f'\033[;32mNovo saldo:  {round(Decimal(chain_state.get_balance(wallet.address)), 8):.8f} B$\033[m')
-                        thread_broadcast_last_block = threading.Thread(target=node.broadcast_last_block)
-                        thread_broadcast_last_block.start()
-                        print('=' * 60)
+                        print(now.strftime(f'\033[;31m⛏️ Mineração iniciada em: %y-%m-%d %H:%M:%S\033[m com dificuldade {chain_state.pending_block[0].difficulty}.'))
+                        print(f'\033[;31mMinerando bloco #{chain_state.pending_block[0].index}...\033[m')
+                        resultado = miner.mine()
+                        if resultado:
+                            now = datetime.now()
+                            print(now.strftime(f'\033[;31m⛏️ Mineração Terminada em: %y-%m-%d %H:%M:%S\033[m.'))
+                            print(f'\033[;32mRecompensa de:  {chain_state.load_block(len(chain_state.chain) - 1)["reward"]} B$ adicionada!\033[m')
+                            print(f'\033[;32mNovo saldo:  {round(Decimal(chain_state.get_balance(wallet.address)), 8):.8f} B$\033[m')
+                            thread_broadcast_last_block = threading.Thread(target=node.broadcast_last_block)
+                            thread_broadcast_last_block.start()
+                            print('=' * 60)
+                        else:
+                            print('\033[;31mBloco minerado é inválido! Sem recompensas!\033[m')
+                            print('=' * 60)
                     else:
-                        print('\033[;31mBloco minerado é inválido! Sem recompensas!\033[m')
+                        print('\033[;31mNão há bloco pendente!\033[m')
                         print('=' * 60)
-                else:
-                    print('\033[;31mNão há bloco pendente!\033[m')
-                    print('=' * 60)
+                    chain_state.new_pending_block()
             elif option == 5:
                 node.peer_infos()
                 print('=' * 60)
