@@ -144,239 +144,243 @@ class Blockchain:
             json.dumps(trx_dict, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
     def validate_pending_block(self, blk: dict) -> bool:
-        if blk["index"] == 0:
-            if blk["previous_hash"] != "0":
-                return False
-            if blk["reward"] != self.adjust_reward(blk["index"]):
-                return False
-            if blk["difficulty"] != self.adjust_difficulty(blk["index"]):
-                return False
-            if blk["total_fees"] != self.calculate_total_fees(blk):
-                return False
-            if blk["timestamp"] > time.time_ns():
-                return False
-            if blk["timestamp"] < 1749856600218119179:
-                return False
-            if blk["mine_timestamp"]:
-                return False
-            if len(blk["transactions"]) > self.max_transactions_per_block:
-                return False
-            if not self.validate_tr_hash_unicity(blk["transactions"]):
-                return False
-            for tr in blk["transactions"]:
-                if tr["fees"] != self.calculate_fees(tr["value"]):
+        try:
+            if blk["index"] == 0:
+                if blk["previous_hash"] != "0":
                     return False
-                if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                if blk["reward"] != self.adjust_reward(blk["index"]):
                     return False
-                if tr["difficulty"] != self.transactions_difficulty():
+                if blk["difficulty"] != self.adjust_difficulty(blk["index"]):
                     return False
-                if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                if blk["total_fees"] != self.calculate_total_fees(blk):
                     return False
-                if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
-                                            tr["sender"], bytes.fromhex(tr["hash"]),
-                                            json_para_assinatura(tr["signature"])):
+                if blk["timestamp"] > time.time_ns():
                     return False
-                if tr["timestamp"] < blk["timestamp"]:
+                if blk["timestamp"] < 1749856600218119179:
                     return False
-                if tr["validation_timestamp"] < tr["timestamp"]:
+                if blk["mine_timestamp"]:
                     return False
-                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                if len(blk["transactions"]) > self.max_transactions_per_block:
                     return False
-                if tr["metadata"] is None:
+                if not self.validate_tr_hash_unicity(blk["transactions"]):
                     return False
-                if len(tr["metadata"]) > 80:
+                for tr in blk["transactions"]:
+                    if tr["fees"] != self.calculate_fees(tr["value"]):
+                        return False
+                    if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                        return False
+                    if tr["difficulty"] != self.transactions_difficulty():
+                        return False
+                    if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                        return False
+                    if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
+                                                tr["sender"], bytes.fromhex(tr["hash"]),
+                                                json_para_assinatura(tr["signature"])):
+                        return False
+                    if tr["timestamp"] < blk["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] < tr["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                        return False
+                    if tr["metadata"] is None:
+                        return False
+                    if len(tr["metadata"]) > 80:
+                        return False
+                    if tr["value"] == 0:
+                        return False
+                    sender_balance = self.get_balance(tr["sender"])
+                    if sender_balance < (tr["value"] + tr["fees"]):
+                        return False
+            else:
+                if blk["index"] != (self.load_block(len(chain_state.chain) - 1)["index"] + 1):
                     return False
-                if tr["value"] == 0:
+                if blk["previous_hash"] != self.previous_hash():
                     return False
-                sender_balance = self.get_balance(tr["sender"])
-                if sender_balance < (tr["value"] + tr["fees"]):
+                if blk["reward"] != self.adjust_reward(blk["index"]):
                     return False
-        else:
-            if blk["index"] != (self.load_block(len(chain_state.chain) - 1)["index"] + 1):
-                return False
-            if blk["previous_hash"] != self.previous_hash():
-                return False
-            if blk["reward"] != self.adjust_reward(blk["index"]):
-                return False
-            if blk["difficulty"] != self.adjust_difficulty(blk["index"]):
-                return False
-            if blk["total_fees"] != self.calculate_total_fees(blk):
-                return False
-            if blk["timestamp"] < self.load_block(len(chain_state.chain) - 1)["timestamp"]:
-                return False
-            if blk["timestamp"] > time.time_ns():
-                return False
-            if blk["mine_timestamp"]:
-                return False
-            if len(blk["transactions"]) > self.max_transactions_per_block:
-                return False
-            if not self.validate_tr_hash_unicity(blk["transactions"]):
-                return False
-            for tr in blk["transactions"]:
-                if tr["fees"] != self.calculate_fees(tr["value"]):
+                if blk["difficulty"] != self.adjust_difficulty(blk["index"]):
                     return False
-                if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                if blk["total_fees"] != self.calculate_total_fees(blk):
                     return False
-                if tr["value"] == 0:
+                if blk["timestamp"] < self.load_block(len(chain_state.chain) - 1)["timestamp"]:
                     return False
-                sender_balance = self.get_balance(tr["sender"])
-                if sender_balance < (tr["value"] + tr["fees"]):
+                if blk["timestamp"] > time.time_ns():
                     return False
-                if tr["difficulty"] != self.transactions_difficulty():
+                if blk["mine_timestamp"]:
                     return False
-                if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                if len(blk["transactions"]) > self.max_transactions_per_block:
                     return False
-                if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
-                                            tr["sender"], bytes.fromhex(tr["hash"]),
-                                            json_para_assinatura(tr["signature"])):
+                if not self.validate_tr_hash_unicity(blk["transactions"]):
                     return False
-                if tr["timestamp"] < blk["timestamp"]:
-                    return False
-                if tr["validation_timestamp"] < tr["timestamp"]:
-                    return False
-                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
-                    return False
-                if tr["metadata"] is None:
-                    return False
-                if len(tr["metadata"]) > 80:
-                    return False
-                sender_balance = self.get_balance(tr["sender"])
-                if sender_balance < (tr["value"] + tr["fees"]):
-                    return False
-        return True
+                for tr in blk["transactions"]:
+                    if tr["fees"] != self.calculate_fees(tr["value"]):
+                        return False
+                    if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                        return False
+                    if tr["value"] == 0:
+                        return False
+                    sender_balance = self.get_balance(tr["sender"])
+                    if sender_balance < (tr["value"] + tr["fees"]):
+                        return False
+                    if tr["difficulty"] != self.transactions_difficulty():
+                        return False
+                    if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                        return False
+                    if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
+                                                tr["sender"], bytes.fromhex(tr["hash"]),
+                                                json_para_assinatura(tr["signature"])):
+                        return False
+                    if tr["timestamp"] < blk["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] < tr["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                        return False
+                    if tr["metadata"] is None:
+                        return False
+                    if len(tr["metadata"]) > 80:
+                        return False
+                    sender_balance = self.get_balance(tr["sender"])
+                    if sender_balance < (tr["value"] + tr["fees"]):
+                        return False
+            return True
+        except: return False
 
     def validate_block(self, current_block, previous_block=None) -> bool:
-        if not previous_block:
-            if current_block["index"] != 0:
-                return False
-            if current_block["previous_hash"] != "0":
-                return False
-            if current_block["merkle_root"] != self.compute_merkle_root(current_block):
-                return False
-            if current_block["hash"] != self.calculate_block_hash_after_mining(current_block):
-                return False
-            if current_block["reward"] != self.adjust_reward(current_block["index"]):
-                return False
-            if current_block["difficulty"] != self.adjust_difficulty(current_block["index"]):
-                return False
-            if not current_block["hash"].startswith("0" * self.adjust_difficulty(current_block["index"])):
-                return False
-            if current_block["total_fees"] != self.calculate_total_fees(current_block):
-                return False
-            if current_block["timestamp"] < 1749856600218119179:
-                return False
-            if current_block["timestamp"] > time.time_ns():
-                return False
-            if current_block["mine_timestamp"]:
-                if current_block["mine_timestamp"] < current_block["timestamp"]:
+        try:
+            if not previous_block:
+                if current_block["index"] != 0:
                     return False
-                if current_block["mine_timestamp"] > time.time_ns():
+                if current_block["previous_hash"] != "0":
                     return False
-            if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
-                                        current_block["miner_address"],
-                                        bytes.fromhex(current_block["hash"]),
-                                        json_para_assinatura(current_block["miner_signature"])):
-                return False
-            if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
-                return False
-            if len(current_block["transactions"]) > self.max_transactions_per_block:
-                return False
-            if not self.validate_tr_hash_unicity(current_block["transactions"]):
-                return False
-            for tr in current_block["transactions"]:
-                if tr["fees"] != self.calculate_fees(tr["value"]):
+                if current_block["merkle_root"] != self.compute_merkle_root(current_block):
                     return False
-                if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                if current_block["hash"] != self.calculate_block_hash_after_mining(current_block):
                     return False
-                if tr["value"] == 0:
+                if current_block["reward"] != self.adjust_reward(current_block["index"]):
                     return False
-                sender_balance = self.get_balance(tr["sender"])
-                if sender_balance < (tr["value"] + tr["fees"]):
+                if current_block["difficulty"] != self.adjust_difficulty(current_block["index"]):
                     return False
-                if tr["difficulty"] != self.transactions_difficulty():
+                if not current_block["hash"].startswith("0" * self.adjust_difficulty(current_block["index"])):
                     return False
-                if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                if current_block["total_fees"] != self.calculate_total_fees(current_block):
                     return False
-                if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
-                                        tr["sender"], bytes.fromhex(tr["hash"]),
-                                        json_para_assinatura(tr["signature"])):
+                if current_block["timestamp"] < 1749856600218119179:
                     return False
-                if tr["timestamp"] < current_block["timestamp"]:
+                if current_block["timestamp"] > time.time_ns():
                     return False
-                if tr["validation_timestamp"] < tr["timestamp"]:
+                if current_block["mine_timestamp"]:
+                    if current_block["mine_timestamp"] < current_block["timestamp"]:
+                        return False
+                    if current_block["mine_timestamp"] > time.time_ns():
+                        return False
+                if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
+                                            current_block["miner_address"],
+                                            bytes.fromhex(current_block["hash"]),
+                                            json_para_assinatura(current_block["miner_signature"])):
                     return False
-                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
                     return False
-                if tr["metadata"] is None:
+                if len(current_block["transactions"]) > self.max_transactions_per_block:
                     return False
-                if len(tr["metadata"]) > 80:
+                if not self.validate_tr_hash_unicity(current_block["transactions"]):
                     return False
-        else:
-            if current_block["index"] != (previous_block["index"] + 1):
-                return False
-            if current_block["previous_hash"] != previous_block["hash"]:
-                return False
-            if current_block["merkle_root"] != self.compute_merkle_root(current_block):
-                return False
-            if current_block["hash"] != self.calculate_block_hash_after_mining(current_block):
-                return False
-            if current_block["reward"] != self.adjust_reward(current_block["index"]):
-                return False
-            if current_block["difficulty"] != self.adjust_difficulty(current_block["index"]):
-                return False
-            if not current_block["hash"].startswith("0" * self.adjust_difficulty(current_block["index"])):
-                return False
-            if current_block["total_fees"] != self.calculate_total_fees(current_block):
-                return False
-            if current_block["timestamp"] < previous_block["timestamp"]:
-                return False
-            if current_block["timestamp"] > time.time_ns():
-                return False
-            if current_block["mine_timestamp"]:
-                if current_block["mine_timestamp"] < current_block["timestamp"]:
+                for tr in current_block["transactions"]:
+                    if tr["fees"] != self.calculate_fees(tr["value"]):
+                        return False
+                    if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                        return False
+                    if tr["value"] == 0:
+                        return False
+                    sender_balance = self.get_balance(tr["sender"])
+                    if sender_balance < (tr["value"] + tr["fees"]):
+                        return False
+                    if tr["difficulty"] != self.transactions_difficulty():
+                        return False
+                    if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                        return False
+                    if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
+                                            tr["sender"], bytes.fromhex(tr["hash"]),
+                                            json_para_assinatura(tr["signature"])):
+                        return False
+                    if tr["timestamp"] < current_block["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] < tr["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                        return False
+                    if tr["metadata"] is None:
+                        return False
+                    if len(tr["metadata"]) > 80:
+                        return False
+            else:
+                if current_block["index"] != (previous_block["index"] + 1):
                     return False
-                if current_block["mine_timestamp"] > time.time_ns():
+                if current_block["previous_hash"] != previous_block["hash"]:
                     return False
-            if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
-                return False
-            if len(current_block["transactions"]) > self.max_transactions_per_block:
-                return False
-            if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
-                                        current_block["miner_address"],
-                                        bytes.fromhex(current_block["hash"]),
-                                        json_para_assinatura(current_block["miner_signature"])):
-                return False
-            if not self.validate_tr_hash_unicity(current_block["transactions"]):
-                return False
-            for tr in current_block["transactions"]:
-                if tr["fees"] != self.calculate_fees(tr["value"]):
+                if current_block["merkle_root"] != self.compute_merkle_root(current_block):
                     return False
-                if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                if current_block["hash"] != self.calculate_block_hash_after_mining(current_block):
                     return False
-                if tr["value"] == 0:
+                if current_block["reward"] != self.adjust_reward(current_block["index"]):
                     return False
-                sender_balance = self.get_balance(tr["sender"])
-                if sender_balance < (tr["value"] + tr["fees"]):
+                if current_block["difficulty"] != self.adjust_difficulty(current_block["index"]):
                     return False
-                if tr["difficulty"] != self.transactions_difficulty():
+                if not current_block["hash"].startswith("0" * self.adjust_difficulty(current_block["index"])):
                     return False
-                if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                if current_block["total_fees"] != self.calculate_total_fees(current_block):
                     return False
-                if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
-                                        tr["sender"], bytes.fromhex(tr["hash"]),
-                                        json_para_assinatura(tr["signature"])):
+                if current_block["timestamp"] < previous_block["timestamp"]:
                     return False
-                if tr["timestamp"] < current_block["timestamp"]:
+                if current_block["timestamp"] > time.time_ns():
                     return False
-                if tr["validation_timestamp"] < tr["timestamp"]:
+                if current_block["mine_timestamp"]:
+                    if current_block["mine_timestamp"] < current_block["timestamp"]:
+                        return False
+                    if current_block["mine_timestamp"] > time.time_ns():
+                        return False
+                if len(current_block["transactions"]) < self.min_transactions_block(current_block["index"]):
                     return False
-                if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                if len(current_block["transactions"]) > self.max_transactions_per_block:
                     return False
-                if tr["metadata"] is None:
+                if not verificar_assinatura(json_para_chave_publica(current_block["miner_public_key"]),
+                                            current_block["miner_address"],
+                                            bytes.fromhex(current_block["hash"]),
+                                            json_para_assinatura(current_block["miner_signature"])):
                     return False
-                if len(tr["metadata"]) > 80:
+                if not self.validate_tr_hash_unicity(current_block["transactions"]):
                     return False
-        return True
+                for tr in current_block["transactions"]:
+                    if tr["fees"] != self.calculate_fees(tr["value"]):
+                        return False
+                    if tr["hash"] != self.calculate_transaction_hash_after_mining(tr):
+                        return False
+                    if tr["value"] == 0:
+                        return False
+                    sender_balance = self.get_balance(tr["sender"])
+                    if sender_balance < (tr["value"] + tr["fees"]):
+                        return False
+                    if tr["difficulty"] != self.transactions_difficulty():
+                        return False
+                    if not tr["hash"].startswith("0" * self.transactions_difficulty()):
+                        return False
+                    if not verificar_assinatura(json_para_chave_publica(tr["public_key"]),
+                                            tr["sender"], bytes.fromhex(tr["hash"]),
+                                            json_para_assinatura(tr["signature"])):
+                        return False
+                    if tr["timestamp"] < current_block["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] < tr["timestamp"]:
+                        return False
+                    if tr["validation_timestamp"] > time.time_ns() or tr["timestamp"] > time.time_ns():
+                        return False
+                    if tr["metadata"] is None:
+                        return False
+                    if len(tr["metadata"]) > 80:
+                        return False
+            return True
+        except: return False
 
     def chain_is_valid(self) -> bool:
         for i in range(0, len(self.chain)):
