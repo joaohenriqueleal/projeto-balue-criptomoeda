@@ -12,7 +12,7 @@ class Blockchain:
         self.max_suply = 18_000_000
         self.interval_halving = 360_000
         self.initial_reward = 25
-        self.initial_difficulty = 4
+        self.initial_difficulty = 6
         self.interval_adjust = 2016
         self.adjust = 2
         self.max_transactions_per_block = 10_000
