@@ -160,7 +160,8 @@ class BalueTkinterApp:
         self.blocks_text.config(state=tk.NORMAL)
         self.blocks_text.delete(1.0, tk.END)
 
-        for i in range(0, len(chain_state.chain[-10:][::-1])):  # Last 10 blocks, newest first
+        total_blocks = len(chain_state.chain)
+        for i in range(max(0, total_blocks - 10), total_blocks)[::-1]:
             blk = chain_state.load_block(i)
             self.blocks_text.insert(tk.END, f"Bloco #{blk['index']}\n")
             self.blocks_text.insert(tk.END, f"Hash: {blk['hash'][:10]}...{blk['hash'][-10:]}\n")
@@ -380,7 +381,8 @@ class BalueTkinterApp:
 
         text_area.insert(tk.END, "Últimos 10 blocos da rede + o pendente:\n\n")
 
-        for i in range(len(chain_state.chain[-10:]), len(chain_state.chain)):
+        total_blocks = len(chain_state.chain)
+        for i in range(max(0, total_blocks - 10), total_blocks)[::-1]:
             blk = chain_state.load_block(i)
             text_area.insert(tk.END, f"Bloco #{blk['index']}, Hash:  {blk['hash'][:10]}...{blk['hash'][10:25]}...\n")
             text_area.insert(tk.END, f"      com {len(blk['transactions'])} transações.\n")
