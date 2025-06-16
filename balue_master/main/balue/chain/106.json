@@ -1,0 +1,41 @@
+{
+    "index": 106,
+    "timestamp": 1750041942498225575,
+    "mine_timestamp": 1750042149754784137,
+    "id": "8eb6d40a-02e9-491c-94dc-3a96aac41d8a",
+    "difficulty": 6,
+    "nonce": 5540422,
+    "reward": 25.0,
+    "total_fees": 0.05,
+    "transactions": [
+        {
+            "sender": "5670cb47dfc4bafc1ae987b1b88a75adcdb0e0af",
+            "receiver": "8b6621b9cf26e0199bf859dd21708337cfb209ee",
+            "value": 10.0,
+            "fees": 0.05,
+            "timestamp": 1750041942498450223,
+            "validation_timestamp": 1750041942737342167,
+            "id": "baf78b66-f1f4-4f64-9dad-998f6f35c74b",
+            "metadata": "Satoshi is alive.",
+            "public_key": {
+                "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+            },
+            "signature": {
+                "signature": "MEYCIQCdyrq1WbcKSPV1XH8V9hok0jAWVp1KR3Zs6FSrJEkmTgIhAO1OdMR8+okAnSVCH7LHz45bdat2xRz/orUMo7c38X0s"
+            },
+            "nonce": 19824,
+            "difficulty": 4,
+            "hash": "000077885745d9a809af6c95ce29dc55dd8c5edbff93618eed6c0d34372f0a4c"
+        }
+    ],
+    "merkle_root": "956b0ffb6f6e426285c5a9b4773c7218d0774883a8b8a8af28a691b0dfb4528a",
+    "miner_address": "5670cb47dfc4bafc1ae987b1b88a75adcdb0e0af",
+    "miner_public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "miner_signature": {
+        "signature": "MEQCIHldSrSnUFx275fMknpngWzvDLT4yb3uD+gpqauL2hfcAiAmHTTR5MXtbPAgwbHket63v4GHo1iU5TzJ+D0jswcvag=="
+    },
+    "previous_hash": "000000e02f711aa11d15a75357fd90d82724aea4c9f97ea0aa1ec6b040c91cc2",
+    "hash": "000000a39c2f5d8b1d6ce0823ebbd6ac29bc6020014529e496314e1eaa19282d"
+}
