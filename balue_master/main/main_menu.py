@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 def main() -> None:
     wallet = Wallet(True)
     miner = Miner(wallet.private_key, wallet.public_key, wallet.address)
-    node = Node(8889)
+    node = Node(8888)
     thread_request = threading.Thread(target=node.request_chain)
     thread_request.start()
     thread_broadcast_peers = threading.Thread(target=node.broadcast_peers)
