@@ -1,11 +1,14 @@
 from blockchain.block import *
 from wallet.wallet import *
+import threading
 import os
 
 
 class Blockchain:
 
     def __init__(self):
+        self.chain_lock = threading.Lock()
+
         # Constantes de config do protocolo.
         self.target_time = 600_000_000_000
         self.percent_fees = 0.5
