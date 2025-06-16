@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, scrolledtext
 from p2p_protocol.node import *
+from mine.miner import *
 from decimal import Decimal
 from datetime import datetime, timezone
 import threading

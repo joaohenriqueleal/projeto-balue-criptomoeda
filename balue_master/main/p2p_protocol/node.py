@@ -98,7 +98,6 @@ class Node:
                     s.connect((peer["ip"], peer["port"]))
                     s.sendall(json.dumps(pending.block_to_dict()).encode())
             except Exception as e:
-                print(f"Erro ao broadcast para {peer['ip']}:{peer['port']}: {e}")
                 continue
 
     def broadcast_last_block(self) -> None:
@@ -115,7 +114,6 @@ class Node:
                     s.connect((peer["ip"], peer["port"]))
                     s.sendall(json.dumps(last_block).encode())
             except Exception as e:
-                print(f"Erro ao broadcast último bloco para {peer['ip']}:{peer['port']}: {e}")
                 continue
 
     def request_chain(self) -> None:
@@ -134,7 +132,6 @@ class Node:
                     s.connect((peer["ip"], peer["port"]))
                     s.sendall(json.dumps(requisicao).encode())
             except Exception as e:
-                print(f"Erro ao solicitar chain de {peer['ip']}:{peer['port']}: {e}")
                 continue
 
     def broadcast_chain(self, length, ip, port) -> None:
@@ -148,7 +145,6 @@ class Node:
                         s.sendall(json.dumps(blk).encode())
                         time.sleep(0.05)
                 except Exception as e:
-                    print(f"Erro ao broadcast bloco {i} para {ip}:{port}: {e}")
                     continue
 
     def broadcast_peers(self) -> None:
@@ -164,7 +160,6 @@ class Node:
                         s.sendall(json.dumps(peer_to_send).encode())
                         time.sleep(0.05)
                 except Exception as e:
-                    print(f"Erro ao broadcast peers para {peer['ip']}:{peer['port']}: {e}")
                     continue
 
     def start_node(self) -> None:
@@ -173,8 +168,6 @@ class Node:
         s.bind(('0.0.0.0', self.port))
         s.listen()
 
-        print(f"Nó iniciado em {self.public_ip}:{self.port}")
-
         while True:
             try:
                 conn, addr = s.accept()
@@ -182,7 +175,6 @@ class Node:
                 thread_handle.start()
                 time.sleep(0.1)
             except Exception as e:
-                print(f"Erro ao aceitar conexão: {e}")
                 continue
 
     def handle(self, conn, addr) -> None:
@@ -194,8 +186,6 @@ class Node:
                         break
 
                     data = json.loads(data)
-
-                    # Tratamento para blocos pendentes
                     if "index" in data:
                         if not data["miner_address"] and data["hash"] == "0" and data["nonce"] == 0:
                             if chain_state.validate_pending_block(data):
@@ -209,7 +199,6 @@ class Node:
                                         chain_state.pending_block.append(Block.from_dict(data))
                             continue
 
-                        # Tratamento para blocos minerados
                         with self.chain_lock:
                             previous_block = None
                             if len(chain_state.chain) > 0:
@@ -231,7 +220,6 @@ class Node:
                                     file_path = f'balue/chain/{len(chain_state.chain) - 1}.json'
                                     if os.path.exists(file_path):
                                         os.remove(file_path)
-                                        print(f"Bloco inválido removido: {file_path}")
 
                     # Tratamento para requisição de chain
                     elif "type" in data and data["type"] == "request_chain":
@@ -245,10 +233,7 @@ class Node:
                     elif "ip" in data and "port" in data:
                         self.add_peer(data["ip"], data["port"])
 
-            except json.JSONDecodeError as e:
-                print(f"Erro ao decodificar JSON de {addr}: {e}")
-            except Exception as e:
-                print(f"Erro no handle de {addr}: {e}")
+            except:
+                pass
 
-        # Adiciona o peer após a conexão ser encerrada
         self.add_peer(addr[0], self.port)
