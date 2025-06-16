@@ -6,7 +6,6 @@ from blockchain.blockchain import *
 
 class Node:
     def __init__(self, port: int = 8888) -> None:
-        self.peers_lock = threading.Lock()
         self.chain_lock = threading.Lock()
         self.peers_path = 'balue/peers.json'
         os.makedirs(os.path.dirname(self.peers_path), exist_ok=True)
@@ -42,15 +41,13 @@ class Node:
             return self.get_local_ip()
 
     def save_peers(self) -> None:
-        with self.peers_lock:
-            with open(self.peers_path, 'w', encoding='utf-8') as peers_file:
-                json.dump(self.peers, peers_file, indent=4, ensure_ascii=False)
+        with open(self.peers_path, 'w', encoding='utf-8') as peers_file:
+            json.dump(self.peers, peers_file, indent=4, ensure_ascii=False)
 
     def load_peers(self) -> None:
         if os.path.exists(self.peers_path):
-            with self.peers_lock:
-                with open(self.peers_path, 'r', encoding='utf-8') as peers_file:
-                    self.peers = json.load(peers_file)
+            with open(self.peers_path, 'r', encoding='utf-8') as peers_file:
+                self.peers = json.load(peers_file)
         else:
             self.save_peers()
 
@@ -65,21 +62,20 @@ class Node:
         if (ip == self.local_ip or ip == self.public_ip) and port == self.port:
             return False
 
-        with self.peers_lock:
-            for peer in self.peers:
-                if peer["ip"] == ip and peer["port"] == port:
-                    return False
-
-            if not self.ip_is_valid(ip):
+        for peer in self.peers:
+            if peer["ip"] == ip and peer["port"] == port:
                 return False
 
-            if port < 1024 or port > 49151:
-                return False
+        if not self.ip_is_valid(ip):
+            return False
 
-            new_peer = {"ip": ip, "port": port}
-            self.peers.append(new_peer)
-            self.save_peers()
-            return True
+        if port < 1024 or port > 49151:
+            return False
+
+        new_peer = {"ip": ip, "port": port}
+        self.peers.append(new_peer)
+        self.save_peers()
+        return True
 
     def peer_infos(self) -> None:
         print(f'IP público: {self.public_ip}')
@@ -148,8 +144,7 @@ class Node:
                     continue
 
     def broadcast_peers(self) -> None:
-        with self.peers_lock:
-            peers_copy = self.peers.copy()
+        peers_copy = self.peers.copy()
 
         for peer in peers_copy:
             for peer_to_send in peers_copy:
