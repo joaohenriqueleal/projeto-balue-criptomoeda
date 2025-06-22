@@ -1,0 +1,41 @@
+{
+    "index": 230,
+    "timestamp": 1750555250254760334,
+    "mine_timestamp": 1750556247952113313,
+    "id": "e8df4457-4bc2-4186-9275-f1fd3434e849",
+    "difficulty": 6,
+    "nonce": 28228307,
+    "reward": 25.0,
+    "total_fees": 3.0,
+    "transactions": [
+        {
+            "sender": "5670cb47dfc4bafc1ae987b1b88a75adcdb0e0af",
+            "receiver": "8b6621b9cf26e0199bf859dd21708337cfb209ee",
+            "value": 600.0,
+            "fees": 3.0,
+            "timestamp": 1750555250254957469,
+            "validation_timestamp": 1750555250394864538,
+            "id": "35b95927-13d5-4e15-83a0-964a1d7b0234",
+            "metadata": "Transfira para o endereço combinado.",
+            "public_key": {
+                "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+            },
+            "signature": {
+                "signature": "MEUCIHgzUr98ErSmlsHOsBTBO+Ij+57nDs1uzu9pNdmia4dCAiEAxvRjGr2bkkd4D1D9QJ1Ww5MMNJMJP2YFnUXK624p7PY="
+            },
+            "nonce": 10344,
+            "difficulty": 4,
+            "hash": "0000d464f3b3932c283b483c44f96ac8256d61df8e27ff1f98bb2ed8a8fb8ee5"
+        }
+    ],
+    "merkle_root": "1936699152d343c615b7d1a78af85b3e7f3e24e61c590115313c151e1108d40a",
+    "miner_address": "5670cb47dfc4bafc1ae987b1b88a75adcdb0e0af",
+    "miner_public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "miner_signature": {
+        "signature": "MEUCIQCj9NcigzZd+tZZAFUkSXLvaeT81EJdY01pwe5hSuYEyAIgVUwZGUd2IBuOjDx/tWhuqtoW8gNriv/FW8p+HMOALd8="
+    },
+    "previous_hash": "000000a6b0462513f4eae98e2bde577776b5127694638d53412b90c8f072f55f",
+    "hash": "000000072d59668cc7c334fe4a2018dcd58b1730efc49fa4e2b35e1e5fbd3a17"
+}
