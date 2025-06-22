@@ -1,0 +1,21 @@
+{
+    "index": 279,
+    "timestamp": 1750602012193301994,
+    "mine_timestamp": 1750602371876233423,
+    "id": "c951304c-66f9-4aa4-923b-327f75db00e2",
+    "difficulty": 6,
+    "nonce": 23914003,
+    "reward": 25.0,
+    "total_fees": 0,
+    "transactions": [],
+    "merkle_root": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "miner_address": "5670cb47dfc4bafc1ae987b1b88a75adcdb0e0af",
+    "miner_public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "miner_signature": {
+        "signature": "MEUCIQCXJZzOs/9uzatmG1JLTfNjPFPIOATUqI1rgfYgP2d9tAIgHqUEAjbd07RZjex54QICs8bfTGOcLHt4/wkW/YI3e5w="
+    },
+    "previous_hash": "00000026d0aff30c696f72edf0f9a05f2944936186fb44e3adcc14e8ad4a2c34",
+    "hash": "0000007ade3cd3b6c726f8799ba26ecb3f5b9c896ac61eb3506b139803a5eff7"
+}
