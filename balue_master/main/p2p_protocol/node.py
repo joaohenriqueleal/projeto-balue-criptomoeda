@@ -201,20 +201,16 @@ class Node:
 
                             if chain_state.validate_block(data, previous_block):
                                 chain_state.add_block(data)
-
-                                if chain_state.chain_is_valid():
-                                    chain_state.save_chain()
-
-                                    if len(chain_state.pending_block) > 0:
-                                        if data["index"] == chain_state.pending_block[0].index:
-                                            chain_state.pending_block = []
-                                else:
-                                    # Rollback se a chain não for válida
-                                    chain_state.chain.pop()
-                                    chain_state.save_chain()
-                                    file_path = f'balue/chain/{len(chain_state.chain) - 1}.json'
-                                    if os.path.exists(file_path):
-                                        os.remove(file_path)
+                                if len(chain_state.pending_block) > 0:
+                                    if data["index"] == chain_state.pending_block[0].index:
+                                        chain_state.pending_block = []
+                            else:
+                                # Rollback se a chain não for válida
+                                chain_state.chain.pop()
+                                chain_state.save_chain()
+                                file_path = f'balue/chain/{len(chain_state.chain) - 1}.json'
+                                if os.path.exists(file_path):
+                                    os.remove(file_path)
 
                     # Tratamento para requisição de chain
                     elif "type" in data and data["type"] == "request_chain":
@@ -232,3 +228,4 @@ class Node:
                 pass
 
         self.add_peer(addr[0], self.port)
+
