@@ -1,0 +1,41 @@
+{
+    "index": 315,
+    "timestamp": 1750629543013878180,
+    "mine_timestamp": 1750629546687192746,
+    "id": "f8e3754f-7189-487d-8cc1-d331c23332bf",
+    "difficulty": 6,
+    "nonce": 27750,
+    "reward": 25.0,
+    "total_fees": 3.0,
+    "transactions": [
+        {
+            "sender": "5670cb47dfc4bafc1ae987b1b88a75adcdb0e0af",
+            "receiver": "7d88f5ff5a9294d5d2cdebb356a2adb59ac45a38",
+            "value": 600.0,
+            "fees": 3.0,
+            "timestamp": 1750629543014011597,
+            "validation_timestamp": 1750629543468500205,
+            "id": "ccda314c-9a2f-4495-b3df-6041a2256223",
+            "metadata": "As Balue do cincão",
+            "public_key": {
+                "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+            },
+            "signature": {
+                "signature": "MEUCIChtADL413iPPHFdwzBXV9gR9LlauBe0BMlO7ME295HVAiEA02w1KtLup1YJds1NbwatzDTF2dAbBMLoAwZjDHqX0gE="
+            },
+            "nonce": 39995,
+            "difficulty": 4,
+            "hash": "0000b179594b5ed1f813710faabc7e6e12a67c0eed52f7de48e8ea5a799b0a62"
+        }
+    ],
+    "merkle_root": "d26bb21a8c1dfe1cdbe6233df7ee85cf52bab61802e61d7c58f20916ec028d34",
+    "miner_address": "5670cb47dfc4bafc1ae987b1b88a75adcdb0e0af",
+    "miner_public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUUwc0JHTDVHRnYvK2JIa25qSWx3QUllekk1V00zSE9tdworRWVPNHNGb0NQNnpOVkhjTlNUMWh2RFFlTzRRaDI2Z01WOVhtRmx5THBPUnFmRUlrVmNwcHc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "miner_signature": {
+        "signature": "MEUCIQDUG38rIhTJC84qypIOAsOOkrhMUi6dSo80lnm1Zig/EwIgLuzJAvkAUxEMA6IDEyn/hPQAKYjGIV4zeuEFg2k2liM="
+    },
+    "previous_hash": "000000d39b6cc4cb1d0c633591d1b2e2691b8e3ab46f9069eec48bb06fdf7e38",
+    "hash": "000000b995f28fd10683eadd5f2574452cc45d7252ecb33bc2ccd84ec3bed734"
+}
