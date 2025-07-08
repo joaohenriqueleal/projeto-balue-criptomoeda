@@ -19,7 +19,7 @@ INITIAL_TRANSACTIONS_DIFFICULTY: int = 4
 TRANSACTION_AVERAGE_TIME: int = 10_000_000_000
 
 # General.
-INITIAL_TIMESTAMP: int = 0 # Atualizar com o timestamp do bloco gênesis.
+INITIAL_TIMESTAMP: int = 1752018124149845655
 MAX_TRANSACTIONS_PER_BLOCK: int = 10_000
 
 # Protocol configs.
