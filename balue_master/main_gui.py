@@ -404,21 +404,21 @@ class MainScreen(Screen):
         chain_length = len(blockchain.validations.adjusts.storage.chain)
         start_index = max(0, chain_length - 10)
 
-        for i in range(start_index, chain_length):
-            blk = blockchain.validations.adjusts.storage.load_block(i)
-            item = ThreeLineListItem(
-                text=f"Block #{blk['index']}",
-                secondary_text=f"Hash: {blk['hash'][:10]}...{blk['hash'][-10:]}",
-                tertiary_text=f"{blk['total_transactions']} transactions",
-            )
-            blocks_container.add_widget(item)
-
         for pending_blk in blockchain.pending_block:
             item = ThreeLineListItem(
                 text=f"[Pending] Block #{pending_blk.index}",
                 secondary_text=f"Hash: {pending_blk.hash[:10]}...{pending_blk.hash[-10:]}",
                 tertiary_text=f"{pending_blk.total_transactions} transactions",
                 bg_color=(0.9, 0.9, 0.3, 0.3)
+            )
+            blocks_container.add_widget(item)
+
+        for i in range(start_index, chain_length)[::-1]:
+            blk = blockchain.validations.adjusts.storage.load_block(i)
+            item = ThreeLineListItem(
+                text=f"Block #{blk['index']}",
+                secondary_text=f"Hash: {blk['hash'][:10]}...{blk['hash'][-10:]}",
+                tertiary_text=f"{blk['total_transactions']} transactions",
             )
             blocks_container.add_widget(item)
 
@@ -471,6 +471,11 @@ class MainScreen(Screen):
                 self.show_error("Insufficient balance!")
                 return
 
+            if len(blockchain.pending_block) > 0:
+                if blockchain.pending_block[0].total_transactions >= MAX_TRANSACTIONS_PER_BLOCK:
+                    self.show_error('Pending block is full! Please wait for the next one!')
+                    return
+
             blockchain.new_pending_block()
             t = Transaction(
                 self.wallet.address,
@@ -521,6 +526,17 @@ class MainScreen(Screen):
 
     def start_mining(self, metadata):
         self.dialog.dismiss()
+
+        if len(blockchain.pending_block) > 0:
+            if blockchain.validations.adjusts.min_transactions(blockchain.index()) > blockchain.pending_block[0].total_transactions:
+                self.show_error('block has not yet reached the minimum number of transactions to mine')
+                return
+        else:
+            blockchain.new_pending_block()
+            self.node.broadcasts.broadcast_pending_block()
+            if blockchain.validations.adjusts.min_transactions(blockchain.index()) > blockchain.pending_block[0].total_transactions:
+                self.show_error('block has not yet reached the minimum number of transactions to mine')
+                return
 
         mining_dialog = MDDialog(
             title="Mining in progress...",

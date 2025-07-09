@@ -46,21 +46,22 @@ class MainCli:
                     print(f'In: {self.format_timestamp(tr["validation_timestamp"])}')
                     print(f'On block: #{blk["index"]}')
                     print(f'Description:  {tr["metadata"]}')
+                    print('~' * 80)
 
     @staticmethod
     def print_last_blocks() -> None:
         chain_length = len(blockchain.validations.adjusts.storage.chain)
         start_index = max(0, chain_length - 10)
 
-        for i in range(start_index, chain_length):
+        for pending_blk in blockchain.pending_block[::-1]:
+            print(f'\033[93mBlock #{pending_blk.index}, Hash:  {pending_blk.hash[:20]}...')
+            print(f'    with {pending_blk.total_transactions} transactions.\033[0m')
+
+        for i in range(start_index, chain_length)[::-1]:
             blk: dict = blockchain.validations.adjusts.storage.load_block(i)
             print(f'Block #{blk["index"]}, Hash:  {blk["hash"][:20]}...')
             print(f'    with {blk["total_transactions"]} transactions.')
             print('~' * 80)
-
-        for pending_blk in blockchain.pending_block:
-            print(f'\033[93mBlock #{pending_blk.index}, Hash:  {pending_blk.hash[:20]}...')
-            print(f'    with {pending_blk.total_transactions} transactions.\033[0m')
 
     def print_acquaintance_peers(self) -> None:
         for peer in self.node.broadcasts.peers.peers:
@@ -107,6 +108,10 @@ class MainCli:
                 print(f'Balue address:  {self.wallet.address}')
             if opc == 3:
                 try:
+                    if len(blockchain.pending_block) > 0:
+                        if blockchain.pending_block[0].total_transactions >= MAX_TRANSACTIONS_PER_BLOCK:
+                            self.message_error('Pending block is full! Please wait for the next one!')
+                            continue
                     value: float = float(input('Valor da transação:  '))
                     fee: float = float(input('How much fee do you want to pay for the transaction?  '))
                     receiver: str = str(input('Receiver address:  ')).strip()
@@ -127,6 +132,16 @@ class MainCli:
                 except ValueError:
                     self.message_error('Input a valid Value.')
             elif opc == 4:
+                if len(blockchain.pending_block) > 0:
+                    if blockchain.validations.adjusts.min_transactions(blockchain.index()) > blockchain.pending_block[0].total_transactions:
+                        self.message_error('block has not yet reached the minimum number of transactions to mine')
+                        continue
+                else:
+                    blockchain.new_pending_block()
+                    self.node.broadcasts.broadcast_pending_block()
+                    if blockchain.validations.adjusts.min_transactions(blockchain.index()) > blockchain.pending_block[0].total_transactions:
+                        self.message_error('block has not yet reached the minimum number of transactions to mine')
+                        continue
                 try:
                     metadata: str = str(input('Description in block (opcional):  '))
                     print('=' * 80)
