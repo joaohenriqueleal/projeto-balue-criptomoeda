@@ -18,6 +18,7 @@
 | Transações | Lista de transações incluídas |
 | Nonce | Prova de trabalho |
 | Timestamp | Data de criação |
+| Entre outros | ... |
 
 ## Mineração e Recompensa
 
