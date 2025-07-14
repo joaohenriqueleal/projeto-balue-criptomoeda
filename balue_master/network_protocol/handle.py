@@ -89,5 +89,4 @@ class Handle:
                                                               content["data"]["chain_length"])
                 except Exception as e:
                     print(e)
-                    self.broadcasts.black_list.add_peer(addr[0], self.port)
             self.broadcasts.peers.add_peer(addr[0], self.port)
