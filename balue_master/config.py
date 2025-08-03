@@ -1,0 +1,46 @@
+# General configs.
+CHAIN_VERSION: str = '1.0'
+MAX_TRANSACTIONS_PER_BLOCK: int = 10_000
+DIVISIBLE: int = 100_000_000
+MAX_METADATA_LENGTH: int = 80
+INITIAL_TIMESTAMP: int = 0
+
+# Chain storage configs.
+CHAIN_PATH: str = 'balue/chain/blockchain.json'
+BLOCKS_PATH: str = 'balue/chain'
+
+# Rewards config.
+INTERVAL_HALVING: int = 360_000
+INITIAL_REWARD: int = 25 * DIVISIBLE
+MAX_SUPLY: int = 18_000_000 * DIVISIBLE
+MIN_REWARD: int = 1
+
+# Blocks difficulty configs.
+INTERVAL_ADJUST: int = 2016
+INITIAL_DIFFICULTY: int = 6
+AVERAGE_TIME: int = 600_000_000_000
+ADJUST: int = 2
+
+# Transactions difficulty configs.
+INITIAL_TRANSACTIONS_DIFFICULTY: int = 4
+TRANSACTION_AVERAGE_TIME: int = 10_000_000_000
+TRANSACIONS_ADJUST: int = 1
+
+# Wallets config.
+WALLETS_POINTER_PATH: str = 'balue/wallets/wallets.json'
+WALLETS_PATH: str = 'balue/wallets'
+
+# Protocol configs.
+PORT: int = 8888
+PEERS_PATH: str = 'balue/peers/peers.json'
+TIMEOUT: int = 5
+
+# Protocol headers.
+PENDING_BLOCK_HEADER: str = 'PENDING_BLOCK_CONTENT'
+LAST_BLOCK_HEADER: str = 'LAST_BLOCK_CONTENT'
+REQUEST_CHAIN_HEADER: str = 'REQUEST_CHAIN_CONTENT'
+PEER_HEADER: str = 'PEER_CONTENT'
+BLOCK_HEADER: str = 'BLOCK_CONTENT'
+REQUEST_NODE_INFOS_HEADER: str = 'REQUEST_NODE_INFOS_CONTENT'
+NODE_INFOS_HEADER: str = 'NODE_INFOS_CONTENT'
+REQUEST_PENDING_BLOCK_HEADER: str = 'REQUEST_PENDING_BLOCK_CONTENT'
