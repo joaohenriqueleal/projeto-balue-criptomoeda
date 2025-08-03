@@ -3,7 +3,7 @@ CHAIN_VERSION: str = '1.0'
 MAX_TRANSACTIONS_PER_BLOCK: int = 10_000
 DIVISIBLE: int = 100_000_000
 MAX_METADATA_LENGTH: int = 80
-INITIAL_TIMESTAMP: int = 0
+INITIAL_TIMESTAMP: int = 1754245811915100164
 
 # Chain storage configs.
 CHAIN_PATH: str = 'balue/chain/blockchain.json'

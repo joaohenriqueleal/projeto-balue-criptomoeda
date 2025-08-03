@@ -40,14 +40,14 @@ class MainMenu:
         print('Last 10 blocks + pending in yellow.'.center(80))
         print('=' * 80)
         for blk in blockchain.pending_blocks:
-            self.alert_message(f'Index:  {blk.index}, Hash:  {blk.hash[20:]}...')
+            self.alert_message(f'Index:  {blk.index}, Hash:  {blk.hash[:20]}...')
             self.alert_message(f'     with {blk.total_transactions} transactions.')
             self.alert_message('~' * 80)
         indexes = list(range(len(blockchain.adjusts_path.storage.chain)))
         last_indexes = indexes[-10:]
         for i in last_indexes[::-1]:
             block: dict = blockchain.adjusts_path.storage.load_block(i)
-            print(f'Index:  {block["index"]}, Hash:  {block["hash"][20:]}...')
+            print(f'Index:  {block["index"]}, Hash:  {block["hash"][:20]}...')
             print(f'     with {block["total_transactions"]} transactions.')
             print('~' * 80)
 
