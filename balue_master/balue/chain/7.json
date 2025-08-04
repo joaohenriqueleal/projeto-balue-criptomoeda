@@ -1,0 +1,23 @@
+{
+    "index": 7,
+    "total_transactions": 0,
+    "total_fees": 0,
+    "transactions": [],
+    "merkle_root": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "reward": 2500000000,
+    "miner_address": "8f15bbcf6d0a3c5b8e759c88ab79fbb559de3ac5",
+    "previous_hash": "000000154596f538dd27be3f0bbbe326769299a744ec15163a670a6eae7d2892",
+    "id": "55d1112c-d8ea-427b-9820-8b2f2e894343",
+    "timestamp": 1754261504452238147,
+    "validation_timestamp": 1754261618217738735,
+    "public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUVCMzhWd1pFVEU1Ry9hRDlPV3Y1NjdQSlRveldiVHVxbQpjd0pNbmxyaVc3NElCUFZrR0ZVOWFxRUN6SzJUVC82UVZsM2NVMGRFazZmb0JjZjJLd3JOcGc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "signature": {
+        "signature": "MEUCIFu7vBlFxT9hNcP/QW0f9QHIzuVu4PK6X/yCzPkJEQX8AiEA1wfy/GVxH9MHHgs9MZNOGEPz9YY5h1BptU9/6B/VQMg="
+    },
+    "difficulty": 6,
+    "nonce": 9268849,
+    "metadata": "0",
+    "hash": "00000054214d7470c0845d4c331708d7aaebe74b92e1e8cd62d509524e7d6cb2"
+}

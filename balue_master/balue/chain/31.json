@@ -1,0 +1,23 @@
+{
+    "index": 31,
+    "total_transactions": 0,
+    "total_fees": 0,
+    "transactions": [],
+    "merkle_root": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "reward": 2500000000,
+    "miner_address": "8f15bbcf6d0a3c5b8e759c88ab79fbb559de3ac5",
+    "previous_hash": "0000000c97c486d6df5b0d68756202b4cbeb09daab43a43f07b2fd4954bf7eb2",
+    "id": "b44e9f4a-3033-4da9-b9c6-0723b883da4f",
+    "timestamp": 1754264670856468768,
+    "validation_timestamp": 1754265233073033083,
+    "public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUVCMzhWd1pFVEU1Ry9hRDlPV3Y1NjdQSlRveldiVHVxbQpjd0pNbmxyaVc3NElCUFZrR0ZVOWFxRUN6SzJUVC82UVZsM2NVMGRFazZmb0JjZjJLd3JOcGc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "signature": {
+        "signature": "MEQCIFgZzeaNpr9AOkg2mQ7N5w/Ws63QPj3HXkMv4Af3gCwdAiATyWUFsbCRVWRZ8/svN/uygl5s+JPeKvRuqGco6RwVAw=="
+    },
+    "difficulty": 6,
+    "nonce": 45755549,
+    "metadata": "0",
+    "hash": "0000009fce01a19940a5b8cf4de8c158611f694b9a64d895c7758b2914963c0b"
+}

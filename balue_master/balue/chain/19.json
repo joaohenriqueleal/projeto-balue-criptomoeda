@@ -1,0 +1,23 @@
+{
+    "index": 19,
+    "total_transactions": 0,
+    "total_fees": 0,
+    "transactions": [],
+    "merkle_root": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "reward": 2500000000,
+    "miner_address": "8f15bbcf6d0a3c5b8e759c88ab79fbb559de3ac5",
+    "previous_hash": "0000007d8eb509daaf5aef283ba92fa73af6ea721baacb8d7892883db1a66548",
+    "id": "0db1eb51-04ee-40fa-82b1-659fc8f87fac",
+    "timestamp": 1754262619726298036,
+    "validation_timestamp": 1754262718762342402,
+    "public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUVCMzhWd1pFVEU1Ry9hRDlPV3Y1NjdQSlRveldiVHVxbQpjd0pNbmxyaVc3NElCUFZrR0ZVOWFxRUN6SzJUVC82UVZsM2NVMGRFazZmb0JjZjJLd3JOcGc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "signature": {
+        "signature": "MEUCIElQ0eAV8RKpt+nIgI/kTR21wlcbkuCNYs7LTd8W+7q+AiEA707WyWv3EZn8yLu2M6zOESRIlGeo/qts6Nojkpus0II="
+    },
+    "difficulty": 6,
+    "nonce": 8115258,
+    "metadata": "0",
+    "hash": "0000009660ad05386ab6a279e1291cbcc114b9680de0327072e8b7222ed0212c"
+}

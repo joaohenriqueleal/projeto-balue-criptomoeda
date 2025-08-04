@@ -1,0 +1,23 @@
+{
+    "index": 21,
+    "total_transactions": 0,
+    "total_fees": 0,
+    "transactions": [],
+    "merkle_root": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "reward": 2500000000,
+    "miner_address": "8f15bbcf6d0a3c5b8e759c88ab79fbb559de3ac5",
+    "previous_hash": "0000002f9cc19c879b6c72c51833e480e75dfc5a3718457ce19ab09dab8ce4d8",
+    "id": "81995529-788a-41e1-b79e-c97b183d6af3",
+    "timestamp": 1754262836303471796,
+    "validation_timestamp": 1754263414377271964,
+    "public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUVCMzhWd1pFVEU1Ry9hRDlPV3Y1NjdQSlRveldiVHVxbQpjd0pNbmxyaVc3NElCUFZrR0ZVOWFxRUN6SzJUVC82UVZsM2NVMGRFazZmb0JjZjJLd3JOcGc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "signature": {
+        "signature": "MEQCIHBDtXnKV2NQTftLUD/+mxaKJQAk76CqAzw4QAluGh7DAiAEpYQigBiLwQ6/WSmrDireaDxn+iANa/sdwpF57eTdww=="
+    },
+    "difficulty": 6,
+    "nonce": 47001433,
+    "metadata": "0",
+    "hash": "000000428f4e479e89b032cd7414ba5b4fd2f7b919a594cce6e2253a70af563c"
+}
