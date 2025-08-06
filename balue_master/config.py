@@ -34,6 +34,7 @@ WALLETS_PATH: str = 'balue/wallets'
 PORT: int = 8888
 PEERS_PATH: str = 'balue/peers/peers.json'
 TIMEOUT: int = 5
+MAX_THREADS: int = 40
 
 # Protocol headers.
 PENDING_BLOCK_HEADER: str = 'PENDING_BLOCK_CONTENT'
