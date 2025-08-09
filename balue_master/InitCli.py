@@ -14,11 +14,11 @@ class Init:
                 try:
                     wallet_name: str = str(input('New wallet name:  ')).strip()
                     main_menu: 'MainMenu' = MainMenu(wallet_name)
-                    main_menu.success_message('Wallet created!')
+                    Messages.success_message('Wallet created!')
                     main_menu.main()
                     break
                 except ValueError:
-                    MainMenu.error_message()
+                    Messages.error_message()
                     print('~' * 80)
                     continue
         else:
