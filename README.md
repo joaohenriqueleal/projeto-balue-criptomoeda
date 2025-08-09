@@ -10,6 +10,7 @@
   - Mineração Proof of Work (PoW)
   - Ajuste de dificuldade
   - Mecanismo de halving nas recompensas
+  - Muitos outros
 
 ### Estrutura dos Blocos
 | Componente | Descrição |
