@@ -81,3 +81,5 @@ class MainMenu:
                 exit()
             else:
                 self.messages.error_message('Input a option between 1/12')
+        if len(blockchain.pending_blocks) > 0:
+            self.actions.node.handle.broadcasts.sni.rpb.rni.bc.bp.rc.blb.bpb.broadcast_pending_block()

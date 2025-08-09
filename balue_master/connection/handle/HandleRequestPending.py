@@ -15,7 +15,7 @@ class HandleRequestPending:
                     payload: dict = {
                         "header": PENDING_BLOCK_HEADER,
                         "body": {
-                            "block": Block.from_dict(blockchain.pending_blocks[0].to_dict())
+                            "block": blockchain.pending_blocks[0].to_dict()
                         }
                     }
                     s.settimeout(TIMEOUT)
