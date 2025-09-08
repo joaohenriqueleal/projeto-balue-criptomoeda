@@ -1,0 +1,24 @@
+{
+    "index": 0,
+    "total_transactions": 0,
+    "total_fees": 0,
+    "transactions": [],
+    "merkle_root": "0000000000000000000000000000000000000000000000000000000000000000",
+    "reward": 2500000000,
+    "miner_address": "1f4070725fce473fc90af378885fd3b26f6848fd",
+    "id": "88560b7f-257f-4c36-8ffb-64f03fb877d0",
+    "version": "vAlpha",
+    "timestamp": 1757180326489493038,
+    "validation_timestamp": 1757180431274601787,
+    "public_key": {
+        "public_key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZZd0VBWUhLb1pJemowQ0FRWUZLNEVFQUFvRFFnQUVvaWpUMlE0emp3SFVwMGUxNjRNcW1KUEJwTVZ5OEtWKwpISlBOZkFtb1lmczcrMWgvU1hVRHBxd3lJUEhxbm1IQ2R0cXBkSDFjdVBIYnFJcDBoM2FLOWc9PQotLS0tLUVORCBQVUJMSUMgS0VZLS0tLS0K"
+    },
+    "signature": {
+        "signature": "MEUCIHf4TZzeEFHYbSed5YE5cTy68uOkQHWRgm4apD73vR/UAiEA/Hsv+I1FJHq7ErOte1d5vMM0e0IvyZOsYgxWoccJ37c="
+    },
+    "nonce": 3238341,
+    "difficulty": 6,
+    "metadata": "September, 6, 2025 -> The day of the beginning of the end",
+    "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "hash": "0000006f82670bdf3b5d7a97ca647e32da2f58882b26b760115e38c5df5ff1f8"
+}
