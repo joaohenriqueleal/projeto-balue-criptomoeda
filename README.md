@@ -43,7 +43,7 @@ Peers automatically synchronize with the network to stay updated.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/balue.git
+git clone https://github.com/joaohenriqueleal/projeto-balue-criptomoeda
 cd balue
 
 # Install dependencies
