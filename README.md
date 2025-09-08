@@ -49,7 +49,8 @@ cd projeto-balue-criptomoeda/balue
 # Install dependencies
 pip install -r requirements.txt
 
-# Node initialization 
+# Node initialization
+clear
 python3 InitCli.py
 ```
 
