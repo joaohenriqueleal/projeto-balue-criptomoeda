@@ -44,7 +44,7 @@ Peers automatically synchronize with the network to stay updated.
 ```bash
 # Clone the repository
 git clone https://github.com/joaohenriqueleal/projeto-balue-criptomoeda
-cd balue
+cd projeto-balue-criptomoeda/balue
 
 # Install dependencies
 pip install -r requirements.txt
