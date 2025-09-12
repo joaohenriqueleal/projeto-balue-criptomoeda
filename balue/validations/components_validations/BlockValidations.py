@@ -93,6 +93,8 @@ class BlockValidations:
                     return False
                 if block["timestamp"] < previous_block["timestamp"]:
                     return False
+            if len(block["miner_address"]) > MAX_METADATA_LENGTH:
+                return False
             if len(block["id"]) >= MAX_METADATA_LENGTH:
                 return False
             if len(block["version"]) > MAX_METADATA_LENGTH:
