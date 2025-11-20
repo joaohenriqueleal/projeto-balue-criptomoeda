@@ -33,6 +33,12 @@ Peers automatically synchronize with the network to stay updated.
 
 ---
 
+### Menu
+<img src="https://github.com/joaohenriqueleal/projeto-balue-criptomoeda/blob/main/screenshots/screenshot-menu.png" />
+
+### Mining
+<img src="https://github.com/joaohenriqueleal/projeto-balue-criptomoeda/blob/main/screenshots/sreenshot-mining.png" />
+
 ## Running a Balue Node
 
 ### Requirements
