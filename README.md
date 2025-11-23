@@ -34,10 +34,10 @@ Peers automatically synchronize with the network to stay updated.
 ---
 
 ### Menu
-<img src="https://github.com/joaohenriqueleal/projeto-balue-criptomoeda/blob/main/screenshots/screenshot-menu.png" />
+<img src="https://github.com/joaohenriqueleal/balue-cryptocurrency/blob/main/screenshots/screenshot-menu.png" />
 
 ### Mining
-<img src="https://github.com/joaohenriqueleal/projeto-balue-criptomoeda/blob/main/screenshots/sreenshot-mining.png" />
+<img src="https://github.com/joaohenriqueleal/balue-cryptocurrency/blob/main/screenshots/sreenshot-mining.png" />
 
 ## Running a Balue Node
 
@@ -49,8 +49,8 @@ Peers automatically synchronize with the network to stay updated.
 
 ```bash
 # Clone the repository
-git clone https://github.com/joaohenriqueleal/projeto-balue-criptomoeda
-cd projeto-balue-criptomoeda/balue
+git clone https://github.com/joaohenriqueleal/balue-cryptocurrency
+cd balue-cryptocurrency/balue
 
 # Install dependencies
 pip install -r requirements.txt
